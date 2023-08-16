@@ -1,0 +1,163 @@
+.wrapper {
+    font-family: 'Roboto', sans-serif;
+    border-radius: 4px;
+    padding: 6px 8px;
+
+    min-width: 100%;
+    min-height: 36px;
+
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 1.6rem;
+
+    cursor: pointer;
+    border: 2px solid transparent;
+    // background-color: var(--color-White);
+
+    user-select: none;
+
+    .wrapper {
+        margin-left: 16px;
+    }
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // Độ ưu tiên đầu tiên
+    &.disable {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+.icon + .children,
+.children + .icon {
+    margin-left: 4px;
+}
+
+.icon {
+    display: inline-block;
+    width: 20px;
+    // margin-right: 8px;
+}
+
+// Button styles
+.rounded {
+    font-size: 1.4rem;
+    padding: 0 8px;
+    min-width: 90px;
+    height: 32px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border-radius: 52px;
+    border-color: rgba(22, 24, 35, 0.12);
+
+    &:hover {
+        border-color: rgba(22, 24, 35, 0.2);
+    }
+}
+
+.filled_1 {
+    color: var(--color-Sienna);
+    background-image: var(--color-Gradient-1);
+    border-color: var(--color-Sienna);
+    border-radius: 8px;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.filled_2 {
+    color: var(--color-White);
+    background-image: var(--color-Gradient-2);
+    border-color: var(--color-Champagne);
+    border-radius: 8px;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.outline_1 {
+    color: var(--color-Sienna);
+    border-color: var(--color-Sienna);
+    border-radius: 8px;
+
+    &:hover {
+        // background-color: var(--color-Champagne);
+        opacity: 0.9;
+        background-color: rgba(136, 74, 57, 0.08);
+    }
+}
+
+.outline_2 {
+    color: var(--color-Champagne);
+    border-color: var(--color-Champagne);
+    border-radius: 8px;
+
+    &:hover {
+        // background-color: var(--color-Champagne);
+        opacity: 0.9;
+        background-color: rgba(249, 224, 187, 0.16);
+    }
+}
+
+.none_1 {
+    color: var(--color-Sienna);
+    &:hover {
+        opacity: 0.7;
+    }
+}
+.none_2 {
+    color: var(--color-Copper);
+    &:hover {
+        opacity: 0.7;
+    }
+}
+.none_3 {
+    color: var(--color-Apricot);
+    &:hover {
+        opacity: 0.7;
+    }
+}
+.none_4 {
+    color: var(--color-Champagne);
+    &:hover {
+        opacity: 0.7;
+    }
+}
+
+.menuSetting {
+    height: 4.4rem;
+    margin-left: 0;
+    width: 100%;
+    padding: 10px 8px 10px 16px;
+    text-align: left;
+    border-radius: 0;
+    font-weight: 600;
+    line-height: 1.8rem;
+
+    &:hover {
+        background: rgba(22, 24, 35, 0.03);
+    }
+}
+// Button size
+
+.small {
+    min-height: 28px;
+    min-width: 88px;
+
+    font-weight: 600;
+
+    padding: 0 10px;
+}
+
+.large {
+    min-width: 168px;
+    min-height: 48px;
+
+    font-size: 1.8rem;
+    font-weight: 600;
+}

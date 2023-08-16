@@ -1,0 +1,119 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+:root {
+    --text-color: rgb(22, 24, 35);
+
+    --color-Sienna: #884a39;
+    --color-Copper: #c38154;
+    --color-Apricot: #ffc26f;
+    --color-Champagne: #f9e0bb;
+
+    --color-active-btn: #e9b384;
+
+    --color-Gradient-1: linear-gradient(to right, #fee3ba, #ffc26f);
+    --color-Gradient-Title: linear-gradient(180deg, #c38154 0%, #f3b055 100%);
+    --color-Gradient-2: linear-gradient(to right, #f3b055, #bc6a53);
+
+    --color-White: #ffffff;
+    --color-Gray-100: #f8f9fa;
+    --color-Gray-200: #e9ecef;
+    --color-Gray-300: #dee2e6;
+    --color-Gray-400: #ced4da;
+    --color-Gray-500: #adb5bd;
+    --color-Gray-600: #6c757d;
+    --color-Gray-700: #495057;
+    --color-Gray-800: #343a40;
+    --color-Gray-900: #212529;
+    --color-Black: #000000;
+
+    --color-Primary: #0d6efd;
+    --color-Success: #198754;
+    --color-Warning: #ffc107;
+    --color-Danger: #dc3545;
+
+    --height-header: 8.1rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    // Tối ưu tải phông chữ
+    text-rendering: optimizeSpeed;
+    color: var(--text-color);
+
+    // custom tippy tooltip
+    // .tippy-box {
+    //     background-color: rgba(84, 84, 84, 0.92);
+    //     border-radius: 8px;
+    //     padding: 2px;
+    //     font-weight: 400;
+    //     font-size: 1.6rem;
+    //     line-height: 2.1rem;
+    // }
+
+    // custom form bootstrap
+    .was-validated .form-control:invalid,
+    .was-validated .form-control:valid {
+        background-image: none;
+    }
+    .was-validated .form-check-input:valid,
+    .was-validated .form-check-input:invalid {
+        border-color: transparent;
+    }
+
+    .was-validated .form-check-input:valid ~ .form-check-label,
+    .was-validated .form-check-input:invalid ~ .form-check-label {
+        color: var(--color-White);
+    }
+
+    .was-validated .form-select:valid:not([multiple]):not([size]) {
+        --bs-form-select-bg-icon: none;
+    }
+
+    // scroll
+    overflow-y: overlay;
+}
+
+//scrollbar
+html *::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    // background-color: rgba(22, 24, 35, 0.06);
+    background-color: var(--color-Gray-500);
+}
+
+html *::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+//
+button,
+input,
+[tabindex] {
+    // bỏ khung viền và gạch chân duói chữ
+    border: none;
+    outline: none;
+}
+
+a[href] {
+    color: var(--color-Sienna);
+    // bo gach chan
+    text-decoration: none;
+}

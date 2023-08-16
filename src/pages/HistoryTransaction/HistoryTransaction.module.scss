@@ -1,0 +1,178 @@
+:root {
+    --search-border-radius: 16px;
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    td,
+    tr {
+        border-style: none !important;
+    }
+}
+
+// title
+.title {
+    font-family: Roboto;
+    font-size: 2.2rem;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 150%; /* 63px */
+    letter-spacing: 0.21px;
+
+    background: var(--color-Gradient-Title);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    padding: 20px 0 10px;
+}
+
+// search
+.search {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 45px;
+    width: 50%;
+    background: linear-gradient(270deg, #f3b055 0%, #fee0b4 100%);
+    border: 2px solid #884a39;
+    border-radius: var(--search-border-radius);
+
+    // Dấu nháy màu đỏ khi nhập
+    caret-color: var(--color-Sienna);
+
+    &::after {
+        content: '';
+        top: 0;
+        right: 9%;
+        position: absolute;
+        height: 100%;
+        width: 1.5px;
+        background-color: var(--color-Copper);
+    }
+    &:focus-within {
+        border-color: var(--color-Copper);
+    }
+    &:hover {
+        border-color: var(--color-Copper);
+
+        .icon {
+            color: var(--color-Black);
+        }
+    }
+}
+.input {
+    color: var(--color-Sienna);
+
+    font-size: 1.6rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 24px */
+    letter-spacing: 0.08px;
+
+    padding-right: 30px;
+    padding-left: 18px;
+    flex: 9;
+
+    height: 100%;
+    width: 100%;
+
+    background-color: transparent;
+    border-radius: var(--search-border-radius) 0 0 var(--search-border-radius);
+
+    &:focus {
+        background: var(--color-Gray-100);
+    }
+}
+.icon {
+    font-size: 1.8rem;
+    flex: 1;
+    width: 100%;
+    color: rgba(22, 24, 35, 0.34);
+
+    border-top-right-radius: var(--search-border-radius);
+    border-bottom-right-radius: var(--search-border-radius);
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+// content
+.content {
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    flex-shrink: 0;
+    border-radius: var(--search-border-radius);
+
+    color: #000;
+    font-weight: 500;
+}
+.item {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+
+    width: 45%;
+    height: 100%;
+
+    background: var(--color-Copper);
+    margin: 20px 20px;
+    border: 2px solid #884a39;
+    border-radius: var(--search-border-radius);
+}
+
+.title-item {
+    color: var(--color-White);
+
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 127%; /* 27.94px */
+
+    width: 100%;
+    text-align: center;
+
+    padding: 10px;
+}
+.detail-item {
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    background: var(--color-Champagne);
+    padding: 10px 40px;
+    border-radius: 0 0 var(--search-border-radius) var(--search-border-radius);
+}
+
+.table {
+    width: 100%;
+    height: 100%;
+}
+.key {
+    color: var(--base-gray-600, #6c757d);
+}
+
+@media (max-width: 1060px) {
+    .info {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+// fix css bootrap
+.table > :not(caption) > * > * {
+    background-color: transparent !important;
+}

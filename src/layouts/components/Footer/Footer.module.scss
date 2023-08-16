@@ -1,0 +1,85 @@
+:root {
+    // --size-margin: 184px;
+
+    --size-width-logo: 310px;
+    --size-height-logo: 130px;
+
+    --size-background-footer: 1340px;
+}
+.wrapper {
+    height: 16.7rem;
+    width: 100%;
+
+    color: var(--color-Sienna);
+    background-image: var(--color-Gradient-2);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.back-ground {
+    padding: 20px 0;
+    width: var(--size-background-footer);
+    height: 100%;
+    display: flex;
+    font-weight: 700;
+    // padding: 8px;
+}
+// footer 1
+.logo {
+    width: var(--size-width-logo);
+    height: var(--size-height-logo);
+    margin-right: 20px;
+}
+.menu-item {
+    width: 100%;
+    height: var(--size-height-logo);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.btn {
+    height: 50px;
+    width: 155px;
+    font-weight: 700;
+    background-color: transparent;
+    color: var(--color-Gray-200) !important;
+}
+// thanh ngang
+.thanh-ngang {
+    height: 1px;
+    width: var(--size-background-footer);
+    background-color: var(--color-Gray-200);
+    margin-bottom: 30px;
+}
+// Thong tin khach san
+.info {
+    width: var(--size-background-footer);
+    text-align: left;
+    font-weight: 400;
+    color: var(--color-Gray-200);
+    font-size: 1.6rem;
+    line-height: 3rem;
+    padding: 20px;
+}
+
+// responsive
+
+@media screen and (max-width: 1340px) {
+    .menu-item {
+        flex-wrap: wrap;
+    }
+    .info,
+    .back-ground {
+        width: 100%;
+    }
+}
+@media screen and (max-width: 680px) {
+    .menu-item {
+        display: none;
+    }
+    .back-ground {
+        justify-content: center;
+    }
+}
