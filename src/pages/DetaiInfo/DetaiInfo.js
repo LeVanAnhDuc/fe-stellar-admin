@@ -3,34 +3,61 @@ import styles from './DetailInfo.module.scss';
 
 import Scroll from '../../components/Scroll';
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Table } from 'react-bootstrap';
+
+import { useLocation } from 'react-router-dom';
+import Button from '../../components/Button';
 
 const cx = classNames.bind(styles);
 
 function DetaiInfo() {
-    const generateRandomData = () => {
-        const data = [];
-        for (let i = 1; i <= 5; i++) {
-            data.push({
-                id: i,
-                name: `Lê Văn Anh Đức ${i}`,
-                email: `levananhduc180levananhduc14${i}@example.com`,
-                phone: `123456789${i}`,
-            });
-        }
-        return data;
-    };
-
-    const randomData = generateRandomData();
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title')}>THÔNG TIN CHI TIẾT NGƯỜI DÙNG</div>
 
-            {/* <div className={cx('content')}> */}
-
-            {/* </div> */}
+            <div className={cx('content')}>
+                <Table striped bordered className={cx('table')}>
+                    <tbody>
+                        <tr>
+                            <td className={cx('title-table')}>Họ và Tên</td>
+                            <td className={cx('title-table')}>Giới tính</td>
+                            <td className={cx('title-table')}>Năm sinh</td>
+                        </tr>
+                        <tr>
+                            <td className={cx('item')}>Lê Văn Anh Đức</td>
+                            <td className={cx('item')}>Nam</td>
+                            <td className={cx('item')}>2002</td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2} className={cx('title-table')}>
+                                Số điện thoại
+                            </td>
+                            <td className={cx('title-table')}>Quốc tịch</td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2} className={cx('item')}>
+                                033944****
+                            </td>
+                            <td className={cx('item')}>Việt Nam</td>
+                        </tr>
+                        <tr>
+                            <td colSpan={3} className={cx('title-table')}>
+                                Email
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan={3} className={cx('item')}>
+                                levananhduc1804@gmail.com
+                            </td>
+                        </tr>
+                    </tbody>
+                </Table>
+                <div className={cx('wrapper-btn')}>
+                    <Button className={cx('btn')} filled_1>
+                        Lịch sử giao dịch
+                    </Button>
+                </div>
+            </div>
             <Scroll />
         </div>
     );

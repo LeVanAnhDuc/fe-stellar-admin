@@ -9,7 +9,10 @@
     width: 100%;
     height: 100%;
 
-    padding-inline: 40px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    color: var(--text-color);
 }
 
 // title
@@ -112,22 +115,109 @@
 // fillter
 .fillter {
     width: 40%;
-}
-.state-room {
-    // line-clamp: (125px, 30%, 150px);
-    width: 45%;
-    height: 100%;
-    background: linear-gradient(270deg, #f3b055 0%, #fee0b4 100%);
-    border: 2px solid #884a39;
-    border-radius: var(--search-border-radius);
-    padding-inline: 20px;
-    margin-right: 20px;
+    display: flex;
 
-    &:focus-within {
-        border-color: var(--color-Copper);
-    }
-    &:hover {
-        border-color: var(--color-Copper);
+    .state-room {
+        // line-clamp: (125px, 30%, 150px);
+        width: 45%;
+        height: 100%;
+
+        background: linear-gradient(270deg, #f3b055 0%, #fee0b4 100%);
+
+        border: 2px solid #884a39;
+        border-radius: var(--search-border-radius);
+
+        padding-inline: 20px;
+        margin-right: 20px;
+
+        color: rgba(136, 74, 57, 0.8);
+        font-size: 1.6rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 150%;
+        letter-spacing: 0.08px;
+
+        &:focus-within {
+            border-color: var(--color-Copper);
+        }
+        &:hover {
+            border-color: var(--color-Copper);
+            background: transparent;
+        }
     }
 }
 // content
+.content {
+    margin-top: 20px;
+    width: 90%;
+    height: 100%;
+
+    color: #000;
+}
+
+.table {
+    width: 100%;
+    height: 100%;
+}
+.title-table {
+    width: 100%;
+    padding: 10px;
+}
+.wrapper-header {
+    width: 100%;
+
+    display: flex;
+    text-align: center;
+
+    .title-item {
+        background: var(--color-Copper);
+        height: 62px;
+        font-size: 1.8rem;
+    }
+    .item {
+        background-color: var(--color-Champagne);
+    }
+
+    .size-1 {
+        width: 5%;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    .size-2 {
+        width: 20%;
+    }
+    .size-3 {
+        width: 30%;
+    }
+    .size-4 {
+        width: 40%;
+    }
+    .size-1,
+    .size-2,
+    .size-3,
+    .size-4 {
+        min-width: 35px;
+
+        display: flex;
+        align-items: center;
+
+        white-space: nowrap; /* Ngăn chữ xuống dòng */
+        overflow: hidden; /* Ẩn nội dung vượt qua kích thước của phần tử */
+        text-overflow: ellipsis; /* Hiển thị dấu chấm (...) khi nội dung bị cắt */
+    }
+    .center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+.data-table {
+    width: 100%;
+    height: 100%;
+}
+
+.detai-info {
+    background-color: transparent;
+}

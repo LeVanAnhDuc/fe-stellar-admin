@@ -8,7 +8,6 @@ import Scroll from '../../components/Scroll';
 import Button from '../../components/Button';
 
 import { Table } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 import React, { useState, useEffect } from 'react';
 import Paginate from '../../components/Paginate/Paginate';

@@ -8,7 +8,7 @@ const Select = ({ options = [], className }) => {
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
     };
-    console.log(selectedValue);
+
     return (
         <Form.Select value={selectedValue} onChange={handleSelectChange} className={className}>
             {options.map((option, index) => (
