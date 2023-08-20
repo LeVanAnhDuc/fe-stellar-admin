@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import styles from './ListRoom.module.scss';
+import styles from './ListOrderRoom.module.scss';
 
 import { SearchIcon } from '../../components/Icon';
 import Select from '../../components/Select';
@@ -32,7 +32,7 @@ function ListRoom() {
         for (let i = 1; i <= 100; i++) {
             data.push({
                 id: i,
-                maDonHang: `Lê Văn Anh Đức ${i}`,
+                maDonHang: `Ma STALLER ${i}`,
                 trangThai: true,
                 phone: `123456789${i}`,
             });
@@ -86,8 +86,8 @@ function ListRoom() {
                                 <td className={cx('size-4', 'item')}>{item.maDonHang}</td>
                                 <td className={cx('size-2', 'center', 'item')}>{item.trangThai ? 'True' : 'False'}</td>
                                 <td className={cx('size-3', 'center', 'item')}>{item.phone}</td>
-                                <td className={cx('size-1', 'item')}>
-                                    <Button className={cx('detai-info')} to={config.Routes.detaiInfo}>
+                                <td className={cx('size-1', 'center', 'item')}>
+                                    <Button className={cx('detai-info')} to={config.Routes.detaiOrderRoom}>
                                         ...
                                     </Button>
                                 </td>

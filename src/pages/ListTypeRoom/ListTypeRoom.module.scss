@@ -117,29 +117,105 @@
 .table {
     width: 100%;
     height: 100%;
+    // th,
+    // td {
+    //     border: 2px solid var(--color-Black);
+    //     // border-bottom: none;
 
-    .title-table {
-        // width: 100%;
-        padding: 15px;
+    //     padding: 10px;
+    // }
+
+    // th + th {
+    //     border-left: none;
+    // }
+
+    // td + td {
+    //     border-left: none;
+    //     border-bottom: none;
+    // }
+}
+.title-table {
+    width: 100%;
+    padding: 10px;
+}
+.wrapper-header {
+    width: 100%;
+
+    display: flex;
+    text-align: center;
+
+    .title-item {
+        background: var(--color-Copper);
+        height: 62px;
         font-size: 1.8rem;
-        background: var(--color-Champagne);
-        font-weight: 600;
     }
     .item {
         background-color: var(--color-Champagne);
-        padding: 15px;
+    }
+
+    .size-1 {
+        width: 5%;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    .size-2 {
+        width: 10%;
+    }
+    .size-3 {
+        width: 35%;
+    }
+    .size-4 {
+        width: 45%;
+    }
+    .size-1,
+    .size-2,
+    .size-3,
+    .size-4 {
+        min-width: 35px;
+
+        display: flex;
+        align-items: center;
+
+        white-space: nowrap; /* Ngăn chữ xuống dòng */
+        overflow: hidden; /* Ẩn nội dung vượt qua kích thước của phần tử */
+        text-overflow: ellipsis; /* Hiển thị dấu chấm (...) khi nội dung bị cắt */
+    }
+    .center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
-.wrapper-btn {
+.data-table {
+    width: 100%;
+    height: 100%;
+}
+
+.detai-info {
+    background-color: transparent;
+}
+
+// modal
+.header {
+    padding-right: 30px;
+}
+.label {
+    color: var(--color-Sienna);
+
+    font-size: 2rem;
+    font-weight: 700;
+}
+.input-modal {
+    font-size: 1.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08px;
+
+    padding: 20px;
+
     height: 100%;
     width: 100%;
-    display: flex;
-    justify-content: right;
-    margin-top: 40px;
-}
-.btn {
-    width: 200px;
-    & ~ .btn {
-        margin-left: 20px;
-    }
+
+    border-radius: var(--search-border-radius);
 }

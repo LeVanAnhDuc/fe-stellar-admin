@@ -2,11 +2,11 @@ import classNames from 'classnames/bind';
 import styles from './DetailInfo.module.scss';
 
 import Scroll from '../../components/Scroll';
+import config from '../../config';
+import Button from '../../components/Button';
 
 import { Table } from 'react-bootstrap';
-
 import { useLocation } from 'react-router-dom';
-import Button from '../../components/Button';
 
 const cx = classNames.bind(styles);
 
@@ -55,6 +55,9 @@ function DetaiInfo() {
                 <div className={cx('wrapper-btn')}>
                     <Button className={cx('btn')} filled_1>
                         Lịch sử giao dịch
+                    </Button>
+                    <Button className={cx('btn')} filled_1 to={config.Routes.infoGuest}>
+                        Quay lại
                     </Button>
                 </div>
             </div>

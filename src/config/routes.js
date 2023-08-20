@@ -4,7 +4,9 @@ const Routes = {
     infoGuest: '/thong-tin-khach-hang',
     detaiInfo: '/thong-tin-chi-tiet',
     listRoom: '/danh-sach-phong',
-    serviceRestaurant: '/dich-vu-nha-hang',
+    detaiOrderRoom: '/chi-tiet-phong-dat',
+    listTypeRoom: '/danh-sach-loai-phong',
+    listRoom: '/danh-sach-phong',
     utilities: '/tien-ich',
     error: '/error',
 };

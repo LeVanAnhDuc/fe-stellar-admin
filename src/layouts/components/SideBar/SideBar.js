@@ -11,11 +11,11 @@ import { BartIcon } from '../../../components/Icon';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faBellConcierge,
     faCompass,
     faHistory,
     faHouse,
     faHouseMedicalFlag,
+    faRectangleList,
     faSignOut,
     faUsers,
 } from '@fortawesome/free-solid-svg-icons';
@@ -39,9 +39,9 @@ const NAV = [
         icon: <FontAwesomeIcon icon={faHouseMedicalFlag} />,
     },
     {
-        title: 'Dịch vụ Nhà hàng ',
-        to: config.Routes.serviceRestaurant,
-        icon: <FontAwesomeIcon icon={faBellConcierge} />,
+        title: 'Danh sách loại phòng ',
+        to: config.Routes.listTypeRoom,
+        icon: <FontAwesomeIcon icon={faRectangleList} />,
     },
     {
         title: 'Tiện ích',
@@ -82,9 +82,7 @@ function SideBar({ sidebarClose, toggleSidebar }) {
                                 to={item.to}
                                 className={active === index ? cx('custom-btn-active') : cx('custom-btn')}
                                 outline_1
-                                onClick={() => 
-                                    handleActive(index)
-                                }
+                                onClick={() => handleActive(index)}
                             >
                                 {!sidebarClose && item.title}
                             </Button>
@@ -95,9 +93,7 @@ function SideBar({ sidebarClose, toggleSidebar }) {
                         to={'/'}
                         className={cx('custom-btn')}
                         outline_1
-                        onClick={() => 
-                            handleActive(-1)
-                        }
+                        onClick={() => handleActive(-1)}
                     >
                         {sidebarClose ? '' : 'Thoát'}
                     </Button>
