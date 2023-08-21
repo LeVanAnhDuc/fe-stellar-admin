@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/fe-stellar-admin/static/css/main.08d0bd07.css",
+    "main.js": "/fe-stellar-admin/static/js/main.4e3a9dc3.js",
+    "static/js/787.34807e24.chunk.js": "/fe-stellar-admin/static/js/787.34807e24.chunk.js",
+    "static/media/logo.png": "/fe-stellar-admin/static/media/logo.bde2ce458b6c80fa3475.png",
+    "static/media/anh-dai-dien.png": "/fe-stellar-admin/static/media/anh-dai-dien.1c263e7a14603d5ee85f.png",
+    "index.html": "/fe-stellar-admin/index.html",
+    "main.08d0bd07.css.map": "/fe-stellar-admin/static/css/main.08d0bd07.css.map",
+    "main.4e3a9dc3.js.map": "/fe-stellar-admin/static/js/main.4e3a9dc3.js.map",
+    "787.34807e24.chunk.js.map": "/fe-stellar-admin/static/js/787.34807e24.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.08d0bd07.css",
+    "static/js/main.4e3a9dc3.js"
+  ]
+}
