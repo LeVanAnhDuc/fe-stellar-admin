@@ -2,12 +2,12 @@ import classNames from 'classnames/bind';
 import styles from './HistoryTransaction.module.scss';
 import { SearchIcon } from '../../components/Icon';
 
-import config from '../../config';
+import React, { useState, useEffect } from 'react';
 
 import Scroll from '../../components/Scroll';
-import Button from '../../components/Button';
 
 import { Table } from 'react-bootstrap';
+import Paginate from '../../components/Paginate/Paginate';
 
 const cx = classNames.bind(styles);
 
@@ -16,73 +16,32 @@ function HistoryTransaction() {
         const data = [];
         for (let i = 1; i <= 5; i++) {
             data.push({
-                id: i,
-                name: `Lê Văn Anh Đức ${i}`,
-                email: `levananhduc180levananhduc14${i}@example.com`,
-                phone: `123456789${i}`,
+                Madonhang: 'Ref. BW20131689481945',
+                SoTienThanhToan: '2,515,000 VND',
+                ThoiGian: '13:00 - 06.08.2023',
+                TrangThai: 'Thất bại',
+                SoThe: '',
+                NganHang: '',
             });
         }
         return data;
     };
 
-    const DATA = [
-        {
-            Madonhang: 'Ref. BW20131689481945',
-            SoTienThanhToan: '2,515,000 VND',
-            ThoiGian: '13:00 - 06.08.2023',
-            TrangThai: 'Thất bại',
-            SoThe: '',
-            NganHang: '',
-            // Thêm các cặp key và value khác
-        },
-        {
-            Madonhang: 'Ref. BW20131689481945',
-            SoTienThanhToan: '2,515,000 VND',
-            ThoiGian: '13:00 - 06.08.2023',
-            TrangThai: 'Thất bại',
-            SoThe: '',
-            NganHang: '',
-            // Thêm các cặp key và value khác
-        },
-        {
-            Madonhang: 'Ref. BW20131689481945',
-            SoTienThanhToan: '2,515,000 VND',
-            ThoiGian: '13:00 - 06.08.2023',
-            TrangThai: 'Thất bại',
-            SoThe: '',
-            NganHang: '',
-            // Thêm các cặp key và value khác
-        },
-        {
-            Madonhang: 'Ref. BW20131689481945',
-            SoTienThanhToan: '2,515,000 VND',
-            ThoiGian: '13:00 - 06.08.2023',
-            TrangThai: 'Thất bại',
-            SoThe: '',
-            NganHang: '',
-            // Thêm các cặp key và value khác
-        },
-        {
-            Madonhang: 'Ref. BW20131689481945',
-            SoTienThanhToan: '2,515,000 VND',
-            ThoiGian: '13:00 - 06.08.2023',
-            TrangThai: 'Thất bại',
-            SoThe: '',
-            NganHang: '',
-            // Thêm các cặp key và value khác
-        },
-        {
-            Madonhang: 'Ref. BW20131689481945',
-            SoTienThanhToan: '2,515,000 VND',
-            ThoiGian: '13:00 - 06.08.2023',
-            TrangThai: 'Thất bại',
-            SoThe: '',
-            NganHang: '',
-            // Thêm các cặp key và value khác
-        },
-    ];
-
     const randomData = generateRandomData();
+
+    // Phan trang (paginate)
+    const itemsPerPage = 2; // Số mục hiển thị trên mỗi trang
+    const pageCount = Math.ceil(randomData.length / itemsPerPage);
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const [currentItems, setCurrentItems] = useState([]);
+
+    useEffect(() => {
+        const startIndex = currentPage * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        setCurrentItems(randomData.slice(startIndex, endIndex));
+    }, [currentPage]);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title')}>LỊCH SỬ GIAO DỊCH</div>
@@ -91,7 +50,7 @@ function HistoryTransaction() {
                 <SearchIcon className={cx('icon')} />
             </div>
             <div className={cx('content')}>
-                {DATA.map((item, index) => (
+                {currentItems.map((item, index) => (
                     <>
                         <div className={cx('item')}>
                             <div key={index} className={cx('title-item')}>
@@ -112,6 +71,7 @@ function HistoryTransaction() {
                         </div>
                     </>
                 ))}
+                <Paginate pageCount={pageCount} setCurrentPage={setCurrentPage} />
             </div>
             <Scroll />
         </div>

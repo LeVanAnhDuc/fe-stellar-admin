@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import styles from './ListTypeRoom.module.scss';
+import styles from './ListRoom.module.scss';
 
 import config from '../../config';
 
@@ -15,31 +15,25 @@ import Paginate from '../../components/Paginate/Paginate';
 
 const cx = classNames.bind(styles);
 
-const arr = [
-    'Phòng Superior Double Or Twin',
-    'Phòng Deluxe Double',
-    'Phòng Executive City View',
-    'Phòng Deluxe Double',
-];
-const detail =
-    'Nếu bạn đang đề cập đến việc sử dụng chung mã PO (Purchase Order) cho các sản phẩm cùng màu, cùng size và cùng loại trong ngữ cảnh của việc đặt hàng và quản lý hàng hóa, thì dưới đây là một số lưu ý cần xem xét:Nếu bạn đang đề cập đến việc sử dụng chung mã PO (Purchase Order) cho các sản phẩm cùng màu, cùng size và cùng loại trong ngữ cảnh của việc đặt hàng và quản lý hàng hóa, thì dưới đây là một số lưu ý cần xem xét:';
-
 const generateRandomData = () => {
     const data = [];
     for (let i = 0; i <= 10; i++) {
         data.push({
             id: i,
-            name: arr[i],
-            number: `10000${i}`,
+            ma: `STL${i}`,
+            type: `Đơn`,
+            sucChua: 3 + i,
+            gia: `1,${i} tr`,
+            status: `trống`,
         });
     }
     return data;
 };
 
 const randomData = generateRandomData();
-function ListTypeRoom() {
+function ListRoom() {
     // Phan trang (paginate)
-    const itemsPerPage = 2; // Số mục hiển thị trên mỗi trang
+    const itemsPerPage = 5; // Số mục hiển thị trên mỗi trang
     const pageCount = Math.ceil(randomData.length / itemsPerPage);
 
     const [currentPage, setCurrentPage] = useState(0);
@@ -69,37 +63,40 @@ function ListTypeRoom() {
                     <thead className={cx('title-table')}>
                         <tr className={cx('wrapper-header')}>
                             <th className={cx('size-1', 'center', 'title-item')}>STT</th>
-                            <th className={cx('size-3', 'center', 'title-item')}>Tên loại</th>
-                            <th className={cx('size-2', 'center', 'title-item')}>Số lượng</th>
-                            <th className={cx('size-4', 'center', 'title-item')}>Mô tả</th>
-                            <th className={cx('size-2', 'center', 'title-item')}>Chỉnh sửa</th>
-                            <th className={cx('size-1', 'title-item')}></th>
+                            <th className={cx('size-2', 'center', 'title-item')}>Mã phòng</th>
+                            <th className={cx('size-2', 'center', 'title-item')}>Loại giường</th>
+                            <th className={cx('size-2', 'center', 'title-item')}>Sức chứa</th>
+                            <th className={cx('size-2', 'center', 'title-item')}>Giá</th>
+                            <th className={cx('size-2', 'center', 'title-item')}>Trạng thái</th>
+                            <th className={cx('size-3', 'center', 'title-item')}></th>
                         </tr>
                     </thead>
                     <tbody className={cx('data-table')}>
                         {currentItems.map((item, index) => (
                             <tr key={index} className={cx('wrapper-header')}>
                                 <td className={cx('size-1', 'center', 'item')}>{item.id}</td>
-                                <td className={cx('size-3', 'item')}>{item.name}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.number}</td>
-                                <td className={cx('size-4', 'center', 'item')}>{detail}</td>
-                                <td className={cx('size-2', 'center', 'item')}>
-                                    <Button filled_1 onClick={handleShow}>
-                                        Chỉnh sửa thông tin
+                                <td className={cx('size-2', 'center', 'item')}>{item.ma}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item.type}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item.sucChua}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item.gia}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item.status}</td>
+                                <td className={cx('size-3', 'center', 'item')}>
+                                    <Button className={cx('btn-small')} filled_1 onClick={handleShow}>
+                                        Sửa
                                     </Button>
                                     <ModalInsert handleClose={handleClose} show={show} />
-                                </td>
-                                <td className={cx('size-1', 'center', 'item')}>
-                                    <Button className={cx('detai-info')} to={config.Routes.listRoom}>
-                                        ...
+                                    <Button className={cx('btn-small')} filled_1>
+                                        Xóa
                                     </Button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </Table>
-
                 <div className={cx('wrapper-btn')}>
+                    <Button className={cx('btn')} filled_1 to={config.Routes.listTypeRoom}>
+                        Quay lại
+                    </Button>
                     <Button className={cx('btn')} filled_1 onClick={handleShow}>
                         Thêm
                     </Button>
@@ -112,4 +109,4 @@ function ListTypeRoom() {
     );
 }
 
-export default ListTypeRoom;
+export default ListRoom;

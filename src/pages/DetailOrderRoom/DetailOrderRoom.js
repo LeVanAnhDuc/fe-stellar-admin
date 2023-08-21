@@ -81,7 +81,7 @@ function DetaiOrderRoom() {
                     </tbody>
                 </Table>
                 <div className={cx('wrapper-btn')}>
-                    <Button className={cx('btn')} filled_1 to={config.Routes.listRoom}>
+                    <Button className={cx('btn')} filled_1 to={config.Routes.listOrderRoom}>
                         Quay lại
                     </Button>
                 </div>

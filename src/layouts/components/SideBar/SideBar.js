@@ -35,7 +35,7 @@ const NAV = [
     },
     {
         title: 'Danh sách đặt phòng',
-        to: config.Routes.listRoom,
+        to: config.Routes.listOrderRoom,
         icon: <FontAwesomeIcon icon={faHouseMedicalFlag} />,
     },
     {

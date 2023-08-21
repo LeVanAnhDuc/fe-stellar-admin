@@ -117,22 +117,6 @@
 .table {
     width: 100%;
     height: 100%;
-    // th,
-    // td {
-    //     border: 2px solid var(--color-Black);
-    //     // border-bottom: none;
-
-    //     padding: 10px;
-    // }
-
-    // th + th {
-    //     border-left: none;
-    // }
-
-    // td + td {
-    //     border-left: none;
-    //     border-bottom: none;
-    // }
 }
 .title-table {
     width: 100%;
@@ -161,13 +145,14 @@
         }
     }
     .size-2 {
-        width: 10%;
+        width: 20%;
     }
     .size-3 {
         width: 35%;
     }
     .size-4 {
         width: 45%;
+        max-width: 400px;
     }
     .size-1,
     .size-2,
@@ -177,10 +162,6 @@
 
         display: flex;
         align-items: center;
-
-        white-space: nowrap; /* Ngăn chữ xuống dòng */
-        overflow: hidden; /* Ẩn nội dung vượt qua kích thước của phần tử */
-        text-overflow: ellipsis; /* Hiển thị dấu chấm (...) khi nội dung bị cắt */
     }
     .center {
         display: flex;
@@ -196,26 +177,41 @@
 .detai-info {
     background-color: transparent;
 }
-
-// modal
-.header {
-    padding-right: 30px;
-}
-.label {
-    color: var(--color-Sienna);
-
-    font-size: 2rem;
-    font-weight: 700;
-}
-.input-modal {
-    font-size: 1.8rem;
-    font-weight: 500;
-    letter-spacing: 0.08px;
-
-    padding: 20px;
-
+.wrapper-btn {
     height: 100%;
     width: 100%;
+    display: flex;
+    justify-content: right;
+    margin: 20px 0 0 0;
+}
+.btn {
+    width: 200px;
+}
+// modal
 
-    border-radius: var(--search-border-radius);
+.modal {
+    .header {
+        padding-right: 30px;
+        .title {
+            @extend .title;
+        }
+    }
+    .label {
+        color: var(--color-Sienna);
+
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    .input-modal {
+        font-size: 1.8rem;
+        font-weight: 500;
+        letter-spacing: 0.08px;
+
+        padding: 20px;
+
+        height: 100%;
+        width: 100%;
+
+        border-radius: var(--search-border-radius);
+    }
 }
