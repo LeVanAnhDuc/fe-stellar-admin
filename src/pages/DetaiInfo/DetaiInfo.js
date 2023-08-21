@@ -6,7 +6,6 @@ import config from '../../config';
 import Button from '../../components/Button';
 
 import { Table } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
