@@ -33,7 +33,7 @@ function ListRoom() {
             data.push({
                 id: i,
                 maDonHang: `Ma STALLER ${i}`,
-                trangThai: true,
+                trangThai: i > 10 ? true : false,
                 phone: `123456789${i}`,
             });
         }

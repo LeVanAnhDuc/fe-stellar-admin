@@ -1,5 +1,57 @@
 .wrapper {
-    display: flex;
     width: 100%;
-    flex-wrap: wrap;
+    height: 100%;
+    padding: 20px;
+
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.8rem;
+    color: var(--text-color);
+    //card
+    .card {
+        text-align: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+
+        .header {
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--color-Sienna);
+        }
+        .footer {
+            display: flex;
+            justify-content: center;
+        }
+    }
+    .card-1 {
+        background-color: var(--color-Champagne);
+    }
+    .card-2 {
+        background: var(--color-Gradient-1);
+    }
+    .card-3 {
+        background-color: var(--color-Apricot);
+    }
+    .card-4 {
+        background: var(--color-Gradient-2);
+    }
+
+    .btn {
+        width: 70%;
+    }
+    // chart
+    .wrapper-chart {
+        height: 500px;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        margin: 20px 0;
+        padding: 20px 0;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .wrapper-chart-small {
+        @extend .wrapper-chart;
+        height: 240px;
+    }
 }
