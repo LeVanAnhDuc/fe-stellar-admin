@@ -18,7 +18,9 @@ import BarChart from './BarChart/index';
 
 const cx = classNames.bind(styles);
 
+
 function Home() {
+    
     return (
         <div className={cx('wrapper')}>
             <Container>
