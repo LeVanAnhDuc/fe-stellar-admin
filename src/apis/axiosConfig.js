@@ -8,10 +8,7 @@ const instance = axios.create({
     },
 });
 
-const noToken = [
-    '/auth/login',
-    '/auth/prefresh-token',
-];
+const noToken = ['/auth/login', '/auth/prefresh-token'];
 
 // Xử lý trước khi xuống server
 // Xử lý token và làm mới token khi cần

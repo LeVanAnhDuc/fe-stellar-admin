@@ -4,8 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { authApi } from '../../apis';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setIsSignIn } from './SignInSlice';
 
 import { useState, useRef } from 'react';
+import config from '../../config'
 
 const cx = classNames.bind(styles);
 
@@ -15,7 +20,10 @@ function SignIn() {
     const [validated, setValidated] = useState(false); // validate
     const [isValidEmail, setIsValidEmail] = useState(true); // validate mail
     const [isValidPassword, setIsValidPassword] = useState(true); // validate password
+
+    const dispatch = useDispatch();
     const notificationRef = useRef(null);
+    const navigate = useNavigate();
 
     const handleChangeEmail = (e) => {
         setEmail(e.target.value);
@@ -41,25 +49,22 @@ function SignIn() {
         event.stopPropagation();
 
         if (isValidEmail && isValidPassword) {
-            // await authApi
-            //     .login(email, password)
-            //     .then((response) => {
-            //         notificationRef.current.classList.remove(cx('hidden'));
-            //         notificationRef.current.classList.add(cx('success'));
-            //         notificationRef.current.textContent = response.data.message;
-            //         dispatch(setIsSignIn(true));
-            //         navigate('/');
-            //     })
-            //     .catch((error) => {
-            //         notificationRef.current.classList.remove(cx('hidden'));
-            //         notificationRef.current.classList.add(cx('error'));
-            //         notificationRef.current.textContent = error.response.data.message;
-            //     });
+            await authApi
+                .login(email, password)
+                .then((response) => {
+                    notificationRef.current.classList.remove(cx('hidden'));
+                    notificationRef.current.classList.add(cx('success'));
+                    notificationRef.current.textContent = response.data.message;
+                    dispatch(setIsSignIn(true));
+                    navigate(config.Routes.home);
+                })
+                .catch((error) => {
+                    notificationRef.current.classList.remove(cx('hidden'));
+                    notificationRef.current.classList.add(cx('error'));
+                    notificationRef.current.textContent = error.response?.data.message ?? 'Đăng nhặp không thành công';
+                });
         }
     };
-
-    console.log(email);
-    console.log(password);
 
     return (
         <>
