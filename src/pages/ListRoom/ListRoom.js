@@ -12,6 +12,7 @@ import { Table } from 'react-bootstrap';
 
 import React, { useState, useEffect } from 'react';
 import Paginate from '../../components/Paginate/Paginate';
+import { useLocation } from 'react-router';
 
 const cx = classNames.bind(styles);
 
@@ -32,6 +33,8 @@ const generateRandomData = () => {
 
 const randomData = generateRandomData();
 function ListRoom() {
+    const location = useLocation();
+    console.log(location.hash);
     // Phan trang (paginate)
     const itemsPerPage = 5; // Số mục hiển thị trên mỗi trang
     const pageCount = Math.ceil(randomData.length / itemsPerPage);

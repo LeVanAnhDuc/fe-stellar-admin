@@ -28,7 +28,7 @@ const generateRandomData = () => {
     const data = [];
     for (let i = 0; i <= 10; i++) {
         data.push({
-            id: i,
+            id: '64e5c324fcfa2fb8e11f1c26',
             name: arr[i],
             number: `10000${i}`,
         });
@@ -79,7 +79,7 @@ function ListTypeRoom() {
                     <tbody className={cx('data-table')}>
                         {currentItems.map((item, index) => (
                             <tr key={index} className={cx('wrapper-header')}>
-                                <td className={cx('size-1', 'center', 'item')}>{item.id}</td>
+                                <td className={cx('size-1', 'center', 'item')}>{index + 1}</td>
                                 <td className={cx('size-3', 'item')}>{item.name}</td>
                                 <td className={cx('size-2', 'center', 'item')}>{item.number}</td>
                                 <td className={cx('size-4', 'center', 'item')}>{detail}</td>
@@ -90,7 +90,7 @@ function ListTypeRoom() {
                                     <ModalInsert handleClose={handleClose} show={show} />
                                 </td>
                                 <td className={cx('size-1', 'center', 'item')}>
-                                    <Button className={cx('detai-info')} to={config.Routes.listRoom}>
+                                    <Button className={cx('detai-info')} to={config.Routes.listRoom + `#${item.id}`}>
                                         ...
                                     </Button>
                                 </td>

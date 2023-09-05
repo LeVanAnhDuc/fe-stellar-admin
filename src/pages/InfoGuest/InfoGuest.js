@@ -11,43 +11,54 @@ import { Table } from 'react-bootstrap';
 
 import React, { useState, useEffect } from 'react';
 import Paginate from '../../components/Paginate/Paginate';
+import { userApi } from '../../apis/index';
 
 const cx = classNames.bind(styles);
 
 function InfoGuest() {
-    const generateRandomData = () => {
-        const data = [];
-        for (let i = 1; i <= 100; i++) {
-            data.push({
-                id: i,
-                name: `Lê Văn Anh Đức ${i}`,
-                email: `levananhduc1804${i}@example.com`,
-                phone: `123456789${i}`,
-            });
-        }
-        return data;
+    const [searchItem, setSearchItem] = useState('');
+    const [listItems, setlistItems] = useState([]);
+    const [pageCount, setPageCount] = useState(10);
+
+    const [pageNumber, setPageNumber] = useState(1);
+    const itemsPerPage = 4;
+
+    const getListUser = async (page, size = itemsPerPage, searchString = '') => {
+        const res = await userApi.getUser(page, size, searchString);
+        setlistItems(res.data.data);
+    };
+    const getTotalUser = async () => {
+        const res = await userApi.getAllTotalUser();
+        setPageCount(Math.ceil(res.data.data.length / itemsPerPage));
     };
 
-    const randomData = generateRandomData();
-
-    // Phan trang (paginate)
-    const itemsPerPage = 6; // Số mục hiển thị trên mỗi trang
-    const pageCount = Math.ceil(randomData.length / itemsPerPage);
-
-    const [currentPage, setCurrentPage] = useState(0);
-    const [currentItems, setCurrentItems] = useState([]);
+    useEffect(() => {
+        getListUser(pageNumber);
+    }, [pageNumber]);
 
     useEffect(() => {
-        const startIndex = currentPage * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        setCurrentItems(randomData.slice(startIndex, endIndex));
-    }, [currentPage]);
+        getTotalUser();
+    }, []);
 
+    const setCurrentPage = (event) => {
+        setPageNumber(event + 1);
+    };
+
+    const handleChangeSearch = (e) => {
+        setSearchItem(e.target.value);
+        getListUser(pageNumber, 10, e.target.value);
+        setPageCount(Math.ceil(listItems.length / itemsPerPage));
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title')}>THÔNG TIN NGƯỜI DÙNG</div>
             <div className={cx('search')}>
-                <input placeholder="Tìm kiếm..." className={cx('input')} />
+                <input
+                    placeholder="Tìm kiếm..."
+                    className={cx('input')}
+                    value={searchItem}
+                    onChange={handleChangeSearch}
+                />
                 <SearchIcon className={cx('icon')} />
             </div>
             <div className={cx('content')}>
@@ -62,14 +73,17 @@ function InfoGuest() {
                         </tr>
                     </thead>
                     <tbody className={cx('data-table')}>
-                        {currentItems.map((item, index) => (
+                        {listItems.map((item, index) => (
                             <tr key={index} className={cx('wrapper-header')}>
-                                <td className={cx('size-1', 'center', 'item')}>{item.id}</td>
-                                <td className={cx('size-3', 'item')}>{item.name}</td>
+                                <td className={cx('size-1', 'center', 'item')}>{index + 1}</td>
+                                <td className={cx('size-3', 'item')}>{item.userName}</td>
                                 <td className={cx('size-4', 'item')}>{item.email}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.phone}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item.phoneNumber}</td>
                                 <td className={cx('size-1', 'item')}>
-                                    <Button className={cx('detai-info')} to={config.Routes.detaiInfo}>
+                                    <Button
+                                        className={cx('detai-info')}
+                                        to={config.Routes.detaiInfo + `#${item.email}`}
+                                    >
                                         ...
                                     </Button>
                                 </td>

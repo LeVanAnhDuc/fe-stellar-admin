@@ -7,6 +7,11 @@ import Form from 'react-bootstrap/Form';
 
 import { useState, useRef } from 'react';
 
+import { useDispatch } from 'react-redux';
+import { authApi } from '../../apis/index.js';
+import { useNavigate } from 'react-router-dom';
+import { setIsSignIn } from './SignInSlice';
+
 const cx = classNames.bind(styles);
 
 function SignIn() {
@@ -16,6 +21,9 @@ function SignIn() {
     const [isValidEmail, setIsValidEmail] = useState(true); // validate mail
     const [isValidPassword, setIsValidPassword] = useState(true); // validate password
     const notificationRef = useRef(null);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleChangeEmail = (e) => {
         setEmail(e.target.value);
@@ -41,25 +49,22 @@ function SignIn() {
         event.stopPropagation();
 
         if (isValidEmail && isValidPassword) {
-            // await authApi
-            //     .login(email, password)
-            //     .then((response) => {
-            //         notificationRef.current.classList.remove(cx('hidden'));
-            //         notificationRef.current.classList.add(cx('success'));
-            //         notificationRef.current.textContent = response.data.message;
-            //         dispatch(setIsSignIn(true));
-            //         navigate('/');
-            //     })
-            //     .catch((error) => {
-            //         notificationRef.current.classList.remove(cx('hidden'));
-            //         notificationRef.current.classList.add(cx('error'));
-            //         notificationRef.current.textContent = error.response.data.message;
-            //     });
+            await authApi
+                .login(email, password)
+                .then((response) => {
+                    notificationRef.current.classList.remove(cx('hidden'));
+                    notificationRef.current.classList.add(cx('success'));
+                    notificationRef.current.textContent = response.data.message;
+                    dispatch(setIsSignIn(true));
+                    navigate('/trang-chu');
+                })
+                .catch((error) => {
+                    notificationRef.current.classList.remove(cx('hidden'));
+                    notificationRef.current.classList.add(cx('error'));
+                    notificationRef.current.textContent = error.response.data.message;
+                });
         }
     };
-
-    console.log(email);
-    console.log(password);
 
     return (
         <>

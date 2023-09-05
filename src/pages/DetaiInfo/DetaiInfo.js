@@ -4,12 +4,29 @@ import styles from './DetailInfo.module.scss';
 import Scroll from '../../components/Scroll';
 import config from '../../config';
 import Button from '../../components/Button';
+import { userApi } from '../../apis/index';
 
 import { Table } from 'react-bootstrap';
+import { useLocation } from 'react-router';
+import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 function DetaiInfo() {
+    // lay url
+    const location = useLocation();
+    const email = location.hash.substring(1);
+
+    const [user, setUser] = useState({});
+
+    const getUser = async (email) => {
+        const res = await userApi.getUser(email);
+        setUser(res.data.data[0]);
+    };
+    useEffect(() => {
+        getUser(email);
+    }, [email]);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title')}>THÔNG TIN CHI TIẾT NGƯỜI DÙNG</div>
@@ -23,9 +40,9 @@ function DetaiInfo() {
                             <td className={cx('title-table')}>Năm sinh</td>
                         </tr>
                         <tr>
-                            <td className={cx('item')}>Lê Văn Anh Đức</td>
-                            <td className={cx('item')}>Nam</td>
-                            <td className={cx('item')}>2002</td>
+                            <td className={cx('item')}>{user.userName}</td>
+                            <td className={cx('item')}>{user.gender}</td>
+                            <td className={cx('item')}>{user.yearOfBirth}</td>
                         </tr>
                         <tr>
                             <td colSpan={2} className={cx('title-table')}>
@@ -35,9 +52,9 @@ function DetaiInfo() {
                         </tr>
                         <tr>
                             <td colSpan={2} className={cx('item')}>
-                                033944****
+                                {user.phoneNumber}
                             </td>
-                            <td className={cx('item')}>Việt Nam</td>
+                            <td className={cx('item')}>{user.nationality}</td>
                         </tr>
                         <tr>
                             <td colSpan={3} className={cx('title-table')}>
@@ -46,7 +63,7 @@ function DetaiInfo() {
                         </tr>
                         <tr>
                             <td colSpan={3} className={cx('item')}>
-                                levananhduc1804@gmail.com
+                                {user.email}
                             </td>
                         </tr>
                     </tbody>
