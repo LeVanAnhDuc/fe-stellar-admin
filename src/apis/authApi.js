@@ -9,7 +9,7 @@ const login = async (email, password) => {
         });
 
         const { data } = response.data;
-        console.log(data.role)
+        console.log(data.role);
 
         if (data.role === process.env.REACT_APP_ADMIN) {
             // Lưu accessToken và refreshToken vào localStorage
@@ -18,7 +18,7 @@ const login = async (email, password) => {
 
             return response;
         } else {
-            return  Error('Không có quyền truy cập');
+            return Error('Không có quyền truy cập');
         }
     } catch (error) {
         throw error;

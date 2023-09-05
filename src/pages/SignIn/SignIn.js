@@ -10,7 +10,12 @@ import { useDispatch } from 'react-redux';
 import { setIsSignIn } from './SignInSlice';
 
 import { useState, useRef } from 'react';
-import config from '../../config'
+import config from '../../config';
+
+import { useDispatch } from 'react-redux';
+import { authApi } from '../../apis/index.js';
+import { useNavigate } from 'react-router-dom';
+import { setIsSignIn } from './SignInSlice';
 
 const cx = classNames.bind(styles);
 
@@ -23,6 +28,9 @@ function SignIn() {
 
     const dispatch = useDispatch();
     const notificationRef = useRef(null);
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleChangeEmail = (e) => {
