@@ -17,7 +17,7 @@ import LineChart from './LineChart/index';
 import BarChart from './BarChart/index';
 
 import { useEffect, useState } from 'react';
-import { userApi, bookingRoomApi, typeRoomApi } from '../../apis';
+import { userApi, bookingApi, typeRoomApi } from '../../apis';
 
 const cx = classNames.bind(styles);
 
@@ -44,7 +44,7 @@ function Home() {
         }
 
         async function fetchTotalAllTransactionHistory() {
-            await bookingRoomApi
+            await bookingApi
                 .getTotalAllTransactionHistory()
                 .then((response) => {
                     setTotalAllTransactionHistory(parseInt(response.data.data));
