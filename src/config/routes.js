@@ -1,7 +1,7 @@
 const Routes = {
     signIn: '/',
     home: '/trang-chu',
-    historyTransaction: '/lich-su-giao-dich',
+
     infoGuest: '/thong-tin-khach-hang',
     detaiInfo: '/thong-tin-chi-tiet',
     listOrderRoom: '/danh-sach-dat-phong',

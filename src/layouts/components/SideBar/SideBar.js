@@ -50,11 +50,6 @@ const NAV = [
         to: config.Routes.utilities,
         icon: <FontAwesomeIcon icon={faCompass} />,
     },
-    {
-        title: 'Lịch sử giao dịch',
-        to: config.Routes.historyTransaction,
-        icon: <FontAwesomeIcon icon={faHistory} />,
-    },
 ];
 
 function SideBar({ sidebarClose, toggleSidebar }) {
