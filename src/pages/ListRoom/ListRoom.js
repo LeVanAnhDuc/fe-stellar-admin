@@ -13,40 +13,44 @@ import { Table } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import Paginate from '../../components/Paginate/Paginate';
 import { useLocation } from 'react-router';
+import { roomApi } from '../../apis';
 
 const cx = classNames.bind(styles);
-
-const generateRandomData = () => {
-    const data = [];
-    for (let i = 0; i <= 10; i++) {
-        data.push({
-            id: i,
-            ma: `STL${i}`,
-            type: `Đơn`,
-            sucChua: 3 + i,
-            gia: `1,${i} tr`,
-            status: `trống`,
-        });
-    }
-    return data;
-};
-
-const randomData = generateRandomData();
 function ListRoom() {
+    // lay url
     const location = useLocation();
-    console.log(location.hash);
-    // Phan trang (paginate)
-    const itemsPerPage = 5; // Số mục hiển thị trên mỗi trang
-    const pageCount = Math.ceil(randomData.length / itemsPerPage);
+    const id = location.hash.substring(1);
 
-    const [currentPage, setCurrentPage] = useState(0);
-    const [currentItems, setCurrentItems] = useState([]);
+    // Phan trang (paginate)
+    const [searchItem, setSearchItem] = useState('');
+    const [listItems, setlistItems] = useState([]);
+    const [pageCount, setPageCount] = useState(10);
+
+    const [pageNumber, setPageNumber] = useState(1);
+    const itemsPerPage = 5;
+
+    const getListTypeRoom = async (page, searchString = '') => {
+        const res = await roomApi.getAllRoomSearch(page, itemsPerPage, searchString, id);
+        setlistItems(res.data.data);
+    };
+
+    const getTotalTypeRoom = async (searchString = '') => {
+        const res = await roomApi.getAllRoom(searchString, id);
+        setPageCount(Math.ceil(res.data.data.length / itemsPerPage));
+    };
 
     useEffect(() => {
-        const startIndex = currentPage * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        setCurrentItems(randomData.slice(startIndex, endIndex));
-    }, [currentPage, randomData]);
+        getListTypeRoom(pageNumber, searchItem);
+        getTotalTypeRoom(searchItem);
+    }, [pageNumber, searchItem]);
+
+    const setCurrentPage = (event) => {
+        setPageNumber(event + 1);
+    };
+
+    const handleChangeSearch = (e) => {
+        setSearchItem(e.target.value);
+    };
 
     // model
     const [show, setShow] = useState(false);
@@ -58,7 +62,12 @@ function ListRoom() {
         <div className={cx('wrapper')}>
             <div className={cx('title')}>DANH SÁCH LOẠI PHÒNG</div>
             <div className={cx('search')}>
-                <input placeholder="Tìm kiếm..." className={cx('input')} />
+                <input
+                    placeholder="Tìm kiếm..."
+                    className={cx('input')}
+                    value={searchItem}
+                    onChange={handleChangeSearch}
+                />
                 <SearchIcon className={cx('icon')} />
             </div>
             <div className={cx('content')}>
@@ -70,19 +79,19 @@ function ListRoom() {
                             <th className={cx('size-2', 'center', 'title-item')}>Loại giường</th>
                             <th className={cx('size-2', 'center', 'title-item')}>Sức chứa</th>
                             <th className={cx('size-2', 'center', 'title-item')}>Giá</th>
-                            <th className={cx('size-2', 'center', 'title-item')}>Trạng thái</th>
+                            <th className={cx('size-2', 'center', 'title-item')}>View</th>
                             <th className={cx('size-3', 'center', 'title-item')}></th>
                         </tr>
                     </thead>
                     <tbody className={cx('data-table')}>
-                        {currentItems.map((item, index) => (
+                        {listItems.map((item, index) => (
                             <tr key={index} className={cx('wrapper-header')}>
-                                <td className={cx('size-1', 'center', 'item')}>{item.id}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.ma}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.type}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.sucChua}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.gia}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.status}</td>
+                                <td className={cx('size-1', 'center', 'item')}>{index + 1}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item.roomNumber}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item.typeBed}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item.acreage}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item.prices}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item.view}</td>
                                 <td className={cx('size-3', 'center', 'item')}>
                                     <Button className={cx('btn-small')} filled_1 onClick={handleShow}>
                                         Sửa
