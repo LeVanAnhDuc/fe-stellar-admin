@@ -20,7 +20,7 @@ function DetaiInfo() {
     const [user, setUser] = useState({});
 
     const getUser = async (email) => {
-        const res = await userApi.getUser(email);
+        const res = await userApi.getAllUserSearch(email);
         setUser(res.data.data[0]);
     };
     useEffect(() => {

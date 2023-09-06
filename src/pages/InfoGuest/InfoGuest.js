@@ -23,22 +23,20 @@ function InfoGuest() {
     const [pageNumber, setPageNumber] = useState(1);
     const itemsPerPage = 4;
 
-    const getListUser = async (page, size = itemsPerPage, searchString = '') => {
-        const res = await userApi.getUser(page, size, searchString);
+    const getListUser = async (page, searchString = '') => {
+        const res = await userApi.getAllUser(page, itemsPerPage, searchString);
         setlistItems(res.data.data);
     };
-    const getTotalUser = async () => {
-        const res = await userApi.getAllTotalUser();
+
+    const getTotalUser = async (searchString = '') => {
+        const res = await userApi.getAllUserSearch(searchString);
         setPageCount(Math.ceil(res.data.data.length / itemsPerPage));
     };
 
     useEffect(() => {
-        getListUser(pageNumber);
-    }, [pageNumber]);
-
-    useEffect(() => {
-        getTotalUser();
-    }, []);
+        getListUser(pageNumber, searchItem);
+        getTotalUser(searchItem);
+    }, [pageNumber, searchItem]);
 
     const setCurrentPage = (event) => {
         setPageNumber(event + 1);
@@ -46,8 +44,6 @@ function InfoGuest() {
 
     const handleChangeSearch = (e) => {
         setSearchItem(e.target.value);
-        getListUser(pageNumber, 10, e.target.value);
-        setPageCount(Math.ceil(listItems.length / itemsPerPage));
     };
     return (
         <div className={cx('wrapper')}>

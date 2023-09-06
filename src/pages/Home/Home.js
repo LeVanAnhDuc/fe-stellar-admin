@@ -18,14 +18,12 @@ import BarChart from './BarChart/index';
 
 const cx = classNames.bind(styles);
 
-
 function Home() {
-    
     return (
         <div className={cx('wrapper')}>
             <Container>
                 <Row>
-                    <Col>
+                    <Col className={cx('col')}>
                         <Card className={cx('card', 'card-1')}>
                             <Card.Header className={cx('header')}>Tài khoản</Card.Header>
                             <Card.Body>
@@ -39,7 +37,7 @@ function Home() {
                             </Card.Footer>
                         </Card>
                     </Col>
-                    <Col>
+                    <Col className={cx('col')}>
                         <Card className={cx('card', 'card-2')}>
                             <Card.Header className={cx('header')}>Đặt phòng</Card.Header>
                             <Card.Body>
@@ -53,7 +51,7 @@ function Home() {
                             </Card.Footer>
                         </Card>
                     </Col>
-                    <Col>
+                    <Col className={cx('col')}>
                         <Card className={cx('card', 'card-3')}>
                             <Card.Header className={cx('header')}>Loại phòng</Card.Header>
                             <Card.Body>
@@ -62,20 +60,6 @@ function Home() {
                             </Card.Body>
                             <Card.Footer className={cx('footer')}>
                                 <Button filled_1 className={cx('btn')} to={config.Routes.listTypeRoom}>
-                                    Danh sách
-                                </Button>
-                            </Card.Footer>
-                        </Card>
-                    </Col>
-                    <Col>
-                        <Card className={cx('card', 'card-4')}>
-                            <Card.Header className={cx('header')}>Giao dịch</Card.Header>
-                            <Card.Body>
-                                <Card.Title>3</Card.Title>
-                                <Card.Text>Đơn</Card.Text>
-                            </Card.Body>
-                            <Card.Footer className={cx('footer')}>
-                                <Button filled_1 className={cx('btn')} to={config.Routes.historyTransaction}>
                                     Danh sách
                                 </Button>
                             </Card.Footer>

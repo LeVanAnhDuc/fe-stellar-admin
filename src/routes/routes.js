@@ -1,5 +1,5 @@
 import Home from '../pages/Home';
-import HistoryTransaction from '../pages/HistoryTransaction';
+
 import InfoGuest from '../pages/InfoGuest';
 import ListOrderRoom from '../pages/ListOrderRoom';
 import ListTypeRoom from '../pages/ListTypeRoom/ListTypeRoom.js';
@@ -20,7 +20,6 @@ const publishRoute = [
 // required sign in
 const privateRoute = [
     { path: config.Routes.home, component: Home },
-    { path: config.Routes.historyTransaction, component: HistoryTransaction },
     { path: config.Routes.infoGuest, component: InfoGuest },
     { path: config.Routes.detaiInfo, component: DetailInfo },
     { path: config.Routes.listOrderRoom, component: ListOrderRoom },
