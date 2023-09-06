@@ -3,23 +3,16 @@ import axios from './axiosConfig.js';
 
 const login = async (email, password) => {
     try {
-        const response = await axios.post('/auth/login', {
+        const response = await axios.post('/auth/admin/login', {
             email,
             password,
         });
 
         const { data } = response.data;
-        console.log(data.role);
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.prefreshToken);
 
-        if (data.role === process.env.REACT_APP_ADMIN) {
-            // Lưu accessToken và refreshToken vào localStorage
-            localStorage.setItem('accessToken', data.accessToken);
-            localStorage.setItem('refreshToken', data.prefreshToken);
-
-            return response;
-        } else {
-            return Error('Không có quyền truy cập');
-        }
+        return response;
     } catch (error) {
         throw error;
     }

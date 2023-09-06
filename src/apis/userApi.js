@@ -28,4 +28,13 @@ const getUser = async (page, size, searchString) => {
     }
 };
 
-export default { getAllUser, getAllTotalUser, getUser };
+const getTotalAccounts = async () => {
+    try {
+        const response = await axios.get('/user/get-total-account');
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export default { getAllUser, getAllTotalUser, getUser, getTotalAccounts };

@@ -19,6 +19,8 @@ import {
     faSignOut,
     faUsers,
 } from '@fortawesome/free-solid-svg-icons';
+import { authApi } from '../../../apis';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -56,12 +58,26 @@ const NAV = [
 ];
 
 function SideBar({ sidebarClose, toggleSidebar }) {
+    const navigate = useNavigate();
     const currentURL = window.location.pathname;
     const index = NAV.findIndex((item) => item.to === currentURL);
 
     const [active, setActive] = useState(index);
     const handleActive = (index) => {
         setActive(index);
+    };
+
+    const handelLogout = async () => {
+        await authApi
+            .logout()
+            .then(() => {
+                localStorage.clear();
+                navigate(config.Routes.signIn);
+            })
+            .catch(() => {
+                localStorage.clear();
+                navigate(config.Routes.signIn);
+            });
     };
 
     return (
@@ -93,7 +109,7 @@ function SideBar({ sidebarClose, toggleSidebar }) {
                         to={'/'}
                         className={cx('custom-btn')}
                         outline_1
-                        onClick={() => handleActive(-1)}
+                        onClick={handelLogout}
                     >
                         {sidebarClose ? '' : 'Thoát'}
                     </Button>
