@@ -6,18 +6,25 @@ import Button from '../../../components/Button';
 import { useState } from 'react';
 
 import { utilitiesApi } from '../../../apis';
+import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
-function ModalInsert({ handleClose, show, items }) {
-    const bool = items ? true : false;
-
-    const [name, setName] = useState();
-    const [image, setImage] = useState();
+function ModalUpdate({ handleClose, show, itemID, itemName, itemDesc }) {
+    const [id, setId] = useState();
+    const [nameItem, setNameItem] = useState();
+    const [imageItem, setImageItem] = useState();
     const [desc, setDesc] = useState();
+
+    useEffect(() => {
+        setId(itemID);
+        setNameItem(itemName);
+        setDesc(itemDesc);
+    }, [itemID, itemName, itemDesc]);
+
     const handleChangeName = (e) => {
         const value = e.target.value;
-        setName(value);
+        setNameItem(value);
     };
     const handleChangeDesc = (e) => {
         const value = e.target.value;
@@ -30,16 +37,16 @@ function ModalInsert({ handleClose, show, items }) {
             return URL.createObjectURL(file); // Or use FileReader to convert to base64
         });
 
-        setImage(imageArray);
+        setImageItem(imageArray);
     };
 
-    const PostUtilities = async () => {
-        await utilitiesApi.postUtilities({ name, image, description: desc });
+    const UpdateUtilities = async () => {
+        await utilitiesApi.updateUtilities({ id, name: nameItem, image: imageItem, description: desc });
     };
 
     const handleComfirm = () => {
         handleClose();
-        PostUtilities();
+        UpdateUtilities();
     };
     return (
         <>
@@ -55,7 +62,7 @@ function ModalInsert({ handleClose, show, items }) {
                                 className={cx('input-modal')}
                                 type="text"
                                 autoFocus
-                                value={name}
+                                value={nameItem}
                                 onChange={handleChangeName}
                             />
                         </Form.Group>
@@ -65,7 +72,7 @@ function ModalInsert({ handleClose, show, items }) {
                                 className={cx('input-modal')}
                                 type="file"
                                 rows={3}
-                                src={image}
+                                src={imageItem}
                                 onChange={handleSetImg}
                             />
                         </Form.Group>
@@ -95,4 +102,4 @@ function ModalInsert({ handleClose, show, items }) {
     );
 }
 
-export default ModalInsert;
+export default ModalUpdate;

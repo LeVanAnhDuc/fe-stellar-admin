@@ -11,6 +11,7 @@ import { Table } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import Paginate from '../../components/Paginate/Paginate';
 import { utilitiesApi } from '../../apis';
+import ModalUpdate from './ModalUpdate/ModalUpdate';
 
 const cx = classNames.bind(styles);
 
@@ -20,21 +21,21 @@ function Utilities() {
     const [pageCount, setPageCount] = useState(10);
 
     const [pageNumber, setPageNumber] = useState(1);
-    const itemsPerPage = 4;
+    const itemsPerPage = 2;
 
-    const getListUtilities = async () => {
-        const res = await utilitiesApi.getAllUtilities();
+    const getListUtilities = async (page, searchString = '') => {
+        const res = await utilitiesApi.getAllUtilities(page, itemsPerPage, searchString);
         setlistItems(res.data.data);
     };
 
-    const getTotalUtilities = async () => {
-        const res = await utilitiesApi.getAllUtilities();
+    const getTotalUtilities = async (searchString = '') => {
+        const res = await utilitiesApi.getAllUtilitiesSearch((searchString = ''));
         setPageCount(Math.ceil(res.data.data.length / itemsPerPage));
     };
 
     useEffect(() => {
-        getListUtilities();
-        getTotalUtilities();
+        getListUtilities(pageNumber, searchItem);
+        getTotalUtilities(searchItem);
     }, [pageNumber, searchItem]);
 
     const setCurrentPage = (event) => {
@@ -46,10 +47,33 @@ function Utilities() {
     };
 
     // model
-    const [show, setShow] = useState(false);
+    const [showUpdate, setShowUpdate] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleCloseUpdate = () => setShowUpdate(false);
+    const handleShowUpdate = () => setShowUpdate(true);
+    // model
+    const [showInsert, setShowInsert] = useState(false);
+
+    const handleCloseInsert = () => setShowInsert(false);
+    const handleShowInsert = () => setShowInsert(true);
+
+    // get user
+    const [idItem, setIdItem] = useState();
+    const [nameItem, setNameItem] = useState();
+    const [desc, setDesc] = useState();
+    const handleGetUser = (index, name, description) => {
+        handleShowUpdate();
+        setIdItem(index);
+        setNameItem(name);
+        setDesc(description);
+    };
+    // delete item
+    const deleteItem = async (id) => {
+        await utilitiesApi.deleteUtilities(id);
+    };
+    const handleDelete = (id) => {
+        deleteItem(id);
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -82,11 +106,21 @@ function Utilities() {
                                 <td className={cx('size-3', 'center', 'item')}>{item.description}</td>
                                 <td className={cx('size-2', 'center', 'item')}></td>
                                 <td className={cx('size-2', 'center', 'item')}>
-                                    <Button className={cx('btn-small')} filled_1 onClick={handleShow}>
+                                    <Button
+                                        className={cx('btn-small')}
+                                        filled_1
+                                        onClick={() => handleGetUser(item._id, item.name, item.description)}
+                                    >
                                         Sửa
                                     </Button>
-                                    <ModalInsert handleClose={handleClose} show={show} />
-                                    <Button className={cx('btn-small')} filled_1>
+                                    <ModalUpdate
+                                        handleClose={handleCloseUpdate}
+                                        show={showUpdate}
+                                        itemName={nameItem}
+                                        itemDesc={desc}
+                                        itemID={idItem}
+                                    />
+                                    <Button className={cx('btn-small')} filled_1 onClick={() => handleDelete(item._id)}>
                                         Xóa
                                     </Button>
                                 </td>
@@ -95,10 +129,10 @@ function Utilities() {
                     </tbody>
                 </Table>
                 <div className={cx('wrapper-btn')}>
-                    <Button className={cx('btn')} filled_1 onClick={handleShow}>
+                    <Button className={cx('btn')} filled_1 onClick={handleShowInsert}>
                         Thêm
                     </Button>
-                    <ModalInsert handleClose={handleClose} show={show} />
+                    <ModalInsert handleClose={handleCloseInsert} show={showInsert} />
                 </div>
                 <Paginate pageCount={pageCount} setCurrentPage={setCurrentPage} />
             </div>

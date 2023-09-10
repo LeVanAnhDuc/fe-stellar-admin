@@ -37,7 +37,7 @@ function DetaiOrderRoom() {
                     <thead>
                         <tr>
                             <th colSpan={3} className={cx('title')}>
-                                CHI TIẾT ĐẶT PHÒNG: ID {booking._id}
+                                CHI TIẾT ĐẶT PHÒNG: ID {booking.id}
                             </th>
                         </tr>
                     </thead>
@@ -82,9 +82,9 @@ function DetaiOrderRoom() {
                             <td className={cx('title-table')}>Quốc gia</td>
                         </tr>
                         <tr>
-                            <td className={cx('item')}>Lê Phúc Hậu</td>
-                            <td className={cx('item')}>0585849276</td>
-                            <td className={cx('item')}>Việt Nam</td>
+                            <td className={cx('item')}>{user.name}</td>
+                            <td className={cx('item')}>{user.phone}</td>
+                            <td className={cx('item')}>{user.nationaly}</td>
                         </tr>
                         <tr>
                             <td colSpan={3} className={cx('title-table')}>
@@ -93,7 +93,7 @@ function DetaiOrderRoom() {
                         </tr>
                         <tr>
                             <td colSpan={3} className={cx('item')}>
-                                lph19032002@gmail.com
+                                {user.email}
                             </td>
                         </tr>
                     </tbody>
