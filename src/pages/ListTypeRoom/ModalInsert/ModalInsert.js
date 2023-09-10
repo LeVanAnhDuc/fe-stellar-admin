@@ -3,10 +3,32 @@ import classNames from 'classnames/bind';
 
 import styles from '../ListTypeRoom.module.scss';
 import Button from '../../../components/Button';
+import { typeRoomApi } from '../../../apis';
+import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
-function ModalInsert({ handleClose, show }) {
+function ModalInsert({ handleClose, show, id }) {
+    const [images, setImages] = useState({ id: id, list: [] });
+
+    const update = async () => {
+        await typeRoomApi.updateTypeRoom();
+    };
+    const handleSetImg = (e) => {
+        const fileList = e.target.files;
+
+        const imageArray = Array.from(fileList).map((file) => {
+            return URL.createObjectURL(file); // Or use FileReader to convert to base64
+        });
+
+        setImages((item) => (item.list = imageArray));
+    };
+
+    const handleComfirm = () => {
+        handleClose();
+        update(images);
+    };
+
     return (
         <>
             <Modal show={show} onHide={handleClose} backdrop="static" size="lg" centered className={cx('modal')}>
@@ -14,22 +36,22 @@ function ModalInsert({ handleClose, show }) {
                     <Modal.Title className={cx('title')}>CHỈNH SỬA DANH SÁCH LOẠI PHÒNG</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Label className={cx('label')}>Tên loại phòng</Form.Label>
-                            <Form.Control className={cx('input-modal')} type="text" autoFocus />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                            <Form.Label className={cx('label')}>Mô tả</Form.Label>
-                            <Form.Control className={cx('input-modal')} as="textarea" rows={3} />
-                        </Form.Group>
-                    </Form>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                        <Form.Label className={cx('label')}>Hình ảnh</Form.Label>
+                        <Form.Control
+                            className={cx('input-modal')}
+                            src={images}
+                            onChange={handleSetImg}
+                            multiple
+                            type="file"
+                        />
+                    </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className={cx('btn')} filled_1 onClick={handleClose}>
                         Đóng
                     </Button>
-                    <Button className={cx('btn')} filled_1 onClick={handleClose}>
+                    <Button className={cx('btn')} filled_1 onClick={handleComfirm}>
                         Xác nhận
                     </Button>
                 </Modal.Footer>

@@ -92,7 +92,7 @@ function ListRoom() {
                         {listItems.map((item, index) => (
                             <tr key={index} className={cx('wrapper-header')}>
                                 <td className={cx('size-1', 'center', 'item')}>{index + 1}</td>
-                                <td className={cx('size-4', 'item')}>{item._id}</td>
+                                <td className={cx('size-4', 'center', 'item')}>{item._id}</td>
                                 <td className={cx('size-3', 'center', 'item')}>{item.typeRoom}</td>
                                 <td className={cx('size-2', 'center', 'item')}>
                                     {item.totalprice.toLocaleString('en-US')}

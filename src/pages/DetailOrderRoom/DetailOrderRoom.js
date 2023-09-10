@@ -4,7 +4,7 @@ import styles from './DetailOrderRoom.module.scss';
 import Scroll from '../../components/Scroll';
 import config from '../../config';
 import Button from '../../components/Button';
-import { bookingApi } from '../../apis/index';
+import { bookingApi, userApi } from '../../apis/index';
 
 import { Table } from 'react-bootstrap';
 import { useLocation } from 'react-router';
@@ -18,11 +18,12 @@ function DetaiOrderRoom() {
     const id = location.hash.substring(1);
 
     const [booking, setBooking] = useState({});
+    const [user, setUser] = useState({});
 
     const getItem = async (id) => {
-        const res = await bookingApi.getAllBookingSearch(id);
-        console.log(res.data.data);
-        setBooking(res.data.data[0]);
+        const res = await bookingApi.getBookingByID(id);
+        setBooking(res.data.data);
+        setUser(res.data.data.user);
     };
     useEffect(() => {
         getItem(id);

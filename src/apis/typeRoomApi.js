@@ -28,4 +28,13 @@ const getAllTypeRoom = async (page, size, searchString) => {
     }
 };
 
-export default {getTotalTyperooms, getAllTypeRoom, getAllTypeRoomSearch };
+const updateTypeRoom = async (object) => {
+    try {
+        const response = await axios.patch(`type-room/update-typeroom`, object);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export default { getTotalTyperooms, getAllTypeRoom, getAllTypeRoomSearch, updateTypeRoom };

@@ -21,6 +21,15 @@ const getAllBooking = async (page, size, searchString) => {
     }
 };
 
+const getBookingByID = async (idBooking) => {
+    try {
+        const response = await axios.get(`/booking-room/get-transactions-history-byId?idBooking=${idBooking}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const getTotalAllTransactionHistory = async () => {
     try {
         const response = await axios.get('/booking-room/get-total-all-transactions-history');
@@ -30,4 +39,4 @@ const getTotalAllTransactionHistory = async () => {
     }
 };
 
-export default { getAllBooking, getAllBookingSearch, getTotalAllTransactionHistory };
+export default { getAllBooking, getAllBookingSearch, getTotalAllTransactionHistory, getBookingByID };

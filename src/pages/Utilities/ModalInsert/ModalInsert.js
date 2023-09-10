@@ -3,10 +3,17 @@ import classNames from 'classnames/bind';
 
 import styles from '../Utilities.module.scss';
 import Button from '../../../components/Button';
+import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 function ModalInsert({ handleClose, show }) {
+    const [item, setItem] = useState({ name: '', image: '', description: '' });
+    const handleChangeName = (e) => {
+        const value = e.target.value;
+        setItem({ ...item, name: value });
+    };
+    console.log(item.name);
     return (
         <>
             <Modal show={show} onHide={handleClose} backdrop="static" size="lg" centered className={cx('modal')}>
@@ -17,7 +24,13 @@ function ModalInsert({ handleClose, show }) {
                     <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label className={cx('label')}>Tên tiện ích</Form.Label>
-                            <Form.Control className={cx('input-modal')} type="text" autoFocus />
+                            <Form.Control
+                                className={cx('input-modal')}
+                                type="text"
+                                autoFocus
+                                value={item.name}
+                                onChange={handleChangeName}
+                            />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                             <Form.Label className={cx('label')}>Hình ảnh</Form.Label>

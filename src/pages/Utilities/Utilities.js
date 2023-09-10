@@ -10,37 +10,40 @@ import { Table } from 'react-bootstrap';
 
 import React, { useState, useEffect } from 'react';
 import Paginate from '../../components/Paginate/Paginate';
+import { utilitiesApi } from '../../apis';
 
 const cx = classNames.bind(styles);
 
-const arr = ['Hồ Bơi Tràn Bờ Trên Cao', 'Phòng Tập Thể Thao', 'Stellar Spa'];
-
-const generateRandomData = () => {
-    const data = [];
-    for (let i = 0; i <= 10; i++) {
-        data.push({
-            id: i + 1,
-            name: arr[i],
-            desc: `.....`,
-        });
-    }
-    return data;
-};
-
-const randomData = generateRandomData();
 function Utilities() {
-    // Phan trang (paginate)
-    const itemsPerPage = 5; // Số mục hiển thị trên mỗi trang
-    const pageCount = Math.ceil(randomData.length / itemsPerPage);
+    const [searchItem, setSearchItem] = useState('');
+    const [listItems, setlistItems] = useState([]);
+    const [pageCount, setPageCount] = useState(10);
 
-    const [currentPage, setCurrentPage] = useState(0);
-    const [currentItems, setCurrentItems] = useState([]);
+    const [pageNumber, setPageNumber] = useState(1);
+    const itemsPerPage = 4;
+
+    const getListUtilities = async () => {
+        const res = await utilitiesApi.getAllUtilities();
+        setlistItems(res.data.data);
+    };
+
+    const getTotalUtilities = async () => {
+        const res = await utilitiesApi.getAllUtilities();
+        setPageCount(Math.ceil(res.data.data.length / itemsPerPage));
+    };
 
     useEffect(() => {
-        const startIndex = currentPage * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        setCurrentItems(randomData.slice(startIndex, endIndex));
-    }, [currentPage, randomData]);
+        getListUtilities();
+        getTotalUtilities();
+    }, [pageNumber, searchItem]);
+
+    const setCurrentPage = (event) => {
+        setPageNumber(event + 1);
+    };
+
+    const handleChangeSearch = (e) => {
+        setSearchItem(e.target.value);
+    };
 
     // model
     const [show, setShow] = useState(false);
@@ -52,7 +55,12 @@ function Utilities() {
         <div className={cx('wrapper')}>
             <div className={cx('title')}>DANH SÁCH LOẠI PHÒNG</div>
             <div className={cx('search')}>
-                <input placeholder="Tìm kiếm..." className={cx('input')} />
+                <input
+                    placeholder="Tìm kiếm..."
+                    className={cx('input')}
+                    value={searchItem}
+                    onChange={handleChangeSearch}
+                />
                 <SearchIcon className={cx('icon')} />
             </div>
             <div className={cx('content')}>
@@ -67,11 +75,11 @@ function Utilities() {
                         </tr>
                     </thead>
                     <tbody className={cx('data-table')}>
-                        {currentItems.map((item, index) => (
+                        {listItems.map((item, index) => (
                             <tr key={index} className={cx('wrapper-header')}>
-                                <td className={cx('size-1', 'center', 'item')}>{item.id}</td>
+                                <td className={cx('size-1', 'center', 'item')}>{index + 1}</td>
                                 <td className={cx('size-2', 'item')}>{item.name}</td>
-                                <td className={cx('size-3', 'center', 'item')}>{item.desc}</td>
+                                <td className={cx('size-3', 'center', 'item')}>{item.description}</td>
                                 <td className={cx('size-2', 'center', 'item')}></td>
                                 <td className={cx('size-2', 'center', 'item')}>
                                     <Button className={cx('btn-small')} filled_1 onClick={handleShow}>

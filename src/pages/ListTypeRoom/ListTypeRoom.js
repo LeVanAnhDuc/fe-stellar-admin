@@ -28,6 +28,7 @@ function ListTypeRoom() {
     const getListTypeRoom = async (page, searchString = '') => {
         const res = await typeRoomApi.getAllTypeRoom(page, itemsPerPage, searchString);
         setlistItems(res.data.data);
+        console.log(res.data.data);
     };
 
     const getTotalTypeRoom = async (searchString = '') => {
@@ -87,7 +88,7 @@ function ListTypeRoom() {
                                     <Button filled_1 onClick={handleShow}>
                                         Chỉnh sửa thông tin
                                     </Button>
-                                    <ModalInsert handleClose={handleClose} show={show} />
+                                    {show ? <ModalInsert handleClose={handleClose} show={show} id={item._id} /> : ''}
                                 </td>
                                 <td className={cx('size-1', 'center', 'item')}>
                                     <Button className={cx('detai-info')} to={config.Routes.listRoom + `#${item._id}`}>
@@ -99,12 +100,6 @@ function ListTypeRoom() {
                     </tbody>
                 </Table>
 
-                <div className={cx('wrapper-btn')}>
-                    <Button className={cx('btn')} filled_1 onClick={handleShow}>
-                        Thêm
-                    </Button>
-                    <ModalInsert handleClose={handleClose} show={show} />
-                </div>
                 <Paginate pageCount={pageCount} setCurrentPage={setCurrentPage} />
             </div>
             <Scroll />
