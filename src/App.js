@@ -1,9 +1,12 @@
-import { BrowserRouter as Router, Routes, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publishRoute, privateRoute } from './routes';
 
-import DefaultLayout from './layouts/DefaultLayout';
 import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import DefaultLayout from './layouts/DefaultLayout';
 import { select } from './redux';
 
 function App() {
@@ -58,6 +61,18 @@ function App() {
                     </div>
                 </Router>
             )}
+            <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </>
     );
 }

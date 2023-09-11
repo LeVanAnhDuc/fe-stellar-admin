@@ -124,9 +124,7 @@
 }
 .wrapper-header {
     width: 100%;
-
     display: flex;
-    text-align: center;
 
     .title-item {
         background: var(--color-Copper);
@@ -151,8 +149,8 @@
         width: 35%;
     }
     .size-4 {
-        width: 45%;
-        max-width: 400px;
+        // width: 45%;
+        width: 55%;
     }
     .size-1,
     .size-2,

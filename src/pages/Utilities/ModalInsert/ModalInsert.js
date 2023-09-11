@@ -5,23 +5,17 @@ import styles from '../Utilities.module.scss';
 import Button from '../../../components/Button';
 import { useState } from 'react';
 
-import { utilitiesApi } from '../../../apis';
-
 const cx = classNames.bind(styles);
 
-function ModalInsert({ handleClose, show, items }) {
-    const bool = items ? true : false;
-
+function ModalInsert({ handleClose, show, PostUtilities }) {
     const [name, setName] = useState();
     const [image, setImage] = useState();
     const [desc, setDesc] = useState();
     const handleChangeName = (e) => {
-        const value = e.target.value;
-        setName(value);
+        setName(e.target.value);
     };
     const handleChangeDesc = (e) => {
-        const value = e.target.value;
-        setDesc(value);
+        setDesc(e.target.value);
     };
     const handleSetImg = (e) => {
         const fileList = e.target.files;
@@ -33,14 +27,13 @@ function ModalInsert({ handleClose, show, items }) {
         setImage(imageArray);
     };
 
-    const PostUtilities = async () => {
-        await utilitiesApi.postUtilities({ name, image, description: desc });
+    const handleComfirm = () => {
+        PostUtilities(name, image, desc);
+        setName('');
+        setDesc('');
+        handleClose();
     };
 
-    const handleComfirm = () => {
-        handleClose();
-        PostUtilities();
-    };
     return (
         <>
             <Modal show={show} onHide={handleClose} backdrop="static" size="lg" centered className={cx('modal')}>
@@ -75,7 +68,7 @@ function ModalInsert({ handleClose, show, items }) {
                                 className={cx('input-modal')}
                                 type="text"
                                 as="textarea"
-                                rows={3}
+                                rows={8}
                                 onChange={handleChangeDesc}
                                 value={desc}
                             />

@@ -5,12 +5,11 @@ import styles from '../Utilities.module.scss';
 import Button from '../../../components/Button';
 import { useState } from 'react';
 
-import { utilitiesApi } from '../../../apis';
 import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
-function ModalUpdate({ handleClose, show, itemID, itemName, itemDesc }) {
+function ModalUpdate({ handleClose, show, itemID, itemName, itemDesc, UpdateUtilities }) {
     const [id, setId] = useState();
     const [nameItem, setNameItem] = useState();
     const [imageItem, setImageItem] = useState();
@@ -40,13 +39,9 @@ function ModalUpdate({ handleClose, show, itemID, itemName, itemDesc }) {
         setImageItem(imageArray);
     };
 
-    const UpdateUtilities = async () => {
-        await utilitiesApi.updateUtilities({ id, name: nameItem, image: imageItem, description: desc });
-    };
-
     const handleComfirm = () => {
         handleClose();
-        UpdateUtilities();
+        UpdateUtilities(id, nameItem, imageItem, desc);
     };
     return (
         <>
@@ -82,7 +77,7 @@ function ModalUpdate({ handleClose, show, itemID, itemName, itemDesc }) {
                                 className={cx('input-modal')}
                                 type="text"
                                 as="textarea"
-                                rows={3}
+                                rows={8}
                                 onChange={handleChangeDesc}
                                 value={desc}
                             />
