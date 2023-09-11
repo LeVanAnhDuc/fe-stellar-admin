@@ -19,4 +19,13 @@ const getAllRoomSearch = async (page, size, searchString, id) => {
     }
 };
 
-export default { getAllRoom, getAllRoomSearch };
+const getNumberStatusRooms = async (date, typeRoom) => {
+    try {
+        const response = await axios.get(`/room/get-number-status-rooms?date=${date}&typeRoom=${typeRoom}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export default { getAllRoom, getAllRoomSearch, getNumberStatusRooms };

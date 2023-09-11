@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import axios from './axiosConfig.js';
 
 const getTotalTyperooms = async () => {
@@ -28,4 +29,28 @@ const getAllTypeRoom = async (page, size, searchString) => {
     }
 };
 
-export default {getTotalTyperooms, getAllTypeRoom, getAllTypeRoomSearch };
+const getListTotalRoomsByTypeRoom = async () => {
+    try {
+        const response = await axios.get('/type-room/get-list-total-rooms-by-typeroom');
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getTypeRoomNames = async () => {
+    try {
+        const response = await axios.get('/type-room/get-type-room-names');
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export default {
+    getTotalTyperooms,
+    getAllTypeRoom,
+    getAllTypeRoomSearch,
+    getListTotalRoomsByTypeRoom,
+    getTypeRoomNames,
+};
