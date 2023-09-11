@@ -1,39 +1,48 @@
-import { useState } from 'react';
+import { useState, useEffect, memo } from 'react';
 import Bar from '../../../components/Chart/Bar';
-
-const arr = ['Superior Double Or Twin', 'Deluxe Double', 'Executive City View', 'Deluxe Double'];
+import { typeRoomApi } from '../../../apis';
 
 function LineChart() {
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    const generateRandomData = () => {
-        const data = [];
-
-        for (let i = 0; i <= 3; i++) {
-            data.push({
-                id: i,
-                name: arr[i],
-                number: getRandomInt(1, 150),
-            });
-        }
-        return data;
-    };
-    const randomData = generateRandomData();
-    const [userData, setUserData] = useState({
-        labels: arr.map((item) => item),
+    const [listTotalRoomsByTypeRoom, setListTotalRoomsByTypeRoom] = useState({
+        labels: [],
         datasets: [
             {
                 label: 'Số phòng',
-                data: randomData.map((item) => item.number),
-                backgroundColor: ['#c38154', '#f9e0bb'],
+                data: [],
+                backgroundColor: ['#c38154'],
                 borderColor: 'black',
                 borderWidth: 1,
             },
         ],
     });
-    return <Bar chartData={userData} />;
+
+    useEffect(() => {
+        async function fetchTotalAccounts() {
+            await typeRoomApi.getListTotalRoomsByTypeRoom().then((response) => {
+                const { data } = response.data;
+
+                const typeRooms = data ? data.map((item) => item.typeRoom) : [];
+                console.log(typeRooms);
+                const totalRoom = data ? data.map((item) => parseInt(item.totalRoom)) : [];
+                setListTotalRoomsByTypeRoom({
+                    labels: typeRooms,
+                    datasets: [
+                        {
+                            label: 'Số phòng',
+                            data: totalRoom,
+                            backgroundColor: ['#c38154'],
+                            borderColor: 'black',
+                            borderWidth: 1,
+                        },
+                    ],
+                });
+            });
+        }
+
+        fetchTotalAccounts();
+    }, []);
+
+    return <Bar chartData={listTotalRoomsByTypeRoom} />;
 }
 
-export default LineChart;
+export default memo(LineChart);

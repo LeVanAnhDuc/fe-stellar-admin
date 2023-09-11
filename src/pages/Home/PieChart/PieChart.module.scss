@@ -1,0 +1,42 @@
+.warpper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+    width: 100%;
+    padding: 16px;
+
+    .wrapper-input {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: self-start;
+        justify-content: center;
+
+        .input-date {
+            display: flex;
+            flex-direction: row;
+            gap: 4px;
+            color: var(--color-Black);
+            border: 2px solid var(--color-Black);
+            padding: 2px 8px;
+            border-radius: 5px;
+
+            .chart {
+                color: var(--color-Black);
+            }
+
+            input {
+                color: var(--color-Black);
+            }
+        }
+
+        .select {
+            color: var(--color-Black);
+            border: 2px solid var(--color-Black);
+            padding: 4px 8px;
+            border-radius: 5px;
+        }
+    }
+}

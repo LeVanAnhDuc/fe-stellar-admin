@@ -39,4 +39,21 @@ const getTotalAllTransactionHistory = async () => {
     }
 };
 
-export default { getAllBooking, getAllBookingSearch, getTotalAllTransactionHistory, getBookingByID };
+const getSalesStatistics = async (startDate, endDate) => {
+    try {
+        const response = await axios.get(
+            `/booking-room/get-sales-statistics?startDate=${startDate}&endDate=${endDate}`,
+        );
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export default {
+    getAllBooking,
+    getAllBookingSearch,
+    getTotalAllTransactionHistory,
+    getSalesStatistics,
+    getBookingByID,
+};

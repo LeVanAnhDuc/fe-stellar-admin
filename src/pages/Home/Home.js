@@ -16,7 +16,7 @@ import PieChart from './PieChart/index';
 import LineChart from './LineChart/index';
 import BarChart from './BarChart/index';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { userApi, bookingApi, typeRoomApi } from '../../apis';
 
 const cx = classNames.bind(styles);
@@ -111,7 +111,7 @@ function Home() {
     return (
         <div className={cx('wrapper')}>
             <Container>
-                <Row>
+                <Row className={cx('row')}>
                     <Col className={cx('col')}>
                         <Card className={cx('card', 'card-1')}>
                             <Card.Header className={cx('header')}>Tài khoản</Card.Header>
@@ -126,8 +126,7 @@ function Home() {
                             </Card.Footer>
                         </Card>
                     </Col>
-
-                    <Col>
+                    <Col className={cx('col')}>
                         <Card className={cx('card', 'card-2')}>
                             <Card.Header className={cx('header')}>Đặt phòng</Card.Header>
                             <Card.Body>
@@ -156,18 +155,20 @@ function Home() {
                         </Card>
                     </Col>
                 </Row>
-                <Row>
+                <Row className={cx('wrapper-chart')}>
                     <Col>
-                        <div className={cx('wrapper-chart')}>
+                        <div className={cx('wrapper-chart-top')}>
                             <LineChart />
                         </div>
                     </Col>
                     <Col>
-                        <div className={cx('wrapper-chart-small')}>
-                            <PieChart />
-                        </div>
-                        <div className={cx('wrapper-chart-small')}>
-                            <BarChart />
+                        <div className={cx('wrapper-chart-bottom')}>
+                            <div className={cx('wrapper-chart-small')}>
+                                <PieChart />
+                            </div>
+                            <div className={cx('wrapper-chart-small')}>
+                                <BarChart />
+                            </div>
                         </div>
                     </Col>
                 </Row>
@@ -178,4 +179,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default memo(Home);
