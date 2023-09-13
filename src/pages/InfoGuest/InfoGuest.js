@@ -30,7 +30,7 @@ function InfoGuest() {
     };
 
     const getTotalUser = async (searchString = '') => {
-        const res = await userApi
+        await userApi
             .getAllUserSearch(searchString)
             .then((res) => setPageCount(Math.ceil(res.data.data.length / itemsPerPage)))
             .catch((error) => {
@@ -89,13 +89,13 @@ function InfoGuest() {
                         {listItems.map((item, index) => (
                             <tr key={index} className={cx('wrapper-header')}>
                                 <td className={cx('size-1', 'center', 'item')}>{index + 1}</td>
-                                <td className={cx('size-3', 'item')}>{item.userName}</td>
-                                <td className={cx('size-4', 'item')}>{item.email}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.phoneNumber}</td>
+                                <td className={cx('size-3', 'item')}>{item?.userName}</td>
+                                <td className={cx('size-4', 'item')}>{item?.email}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item?.phoneNumber}</td>
                                 <td className={cx('size-1', 'item')}>
                                     <Button
                                         className={cx('detai-info')}
-                                        to={config.Routes.detaiInfo + `#${item.email}`}
+                                        to={config.Routes.detaiInfo + `#${item?.email}`}
                                     >
                                         ...
                                     </Button>

@@ -14,32 +14,52 @@ import React, { useState, useEffect } from 'react';
 import Paginate from '../../components/Paginate/Paginate';
 
 import { typeRoomApi } from '../../apis';
+import { toast } from 'react-toastify';
+
 const cx = classNames.bind(styles);
 
 function ListTypeRoom() {
     // Phan trang (paginate)
     const [searchItem, setSearchItem] = useState('');
     const [listItems, setlistItems] = useState([]);
-    const [pageCount, setPageCount] = useState(10);
+    const [pageCount, setPageCount] = useState(0);
 
     const [pageNumber, setPageNumber] = useState(1);
     const itemsPerPage = 2;
 
     const getListTypeRoom = async (page, searchString = '') => {
-        const res = await typeRoomApi.getAllTypeRoom(page, itemsPerPage, searchString);
-        setlistItems(res.data.data);
-        console.log(res.data.data);
+        await typeRoomApi
+            .getAllTypeRoom(page, itemsPerPage, searchString)
+            .then((res) => setlistItems(res.data.data))
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     const getTotalTypeRoom = async (searchString = '') => {
-        const res = await typeRoomApi.getAllTypeRoomSearch(searchString);
-        setPageCount(Math.ceil(res.data.data.length / itemsPerPage));
+        await typeRoomApi
+            .getAllTypeRoomSearch(searchString)
+            .then((res) => setPageCount(Math.ceil(res.data.data.length / itemsPerPage)))
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     useEffect(() => {
-        getListTypeRoom(pageNumber, searchItem);
-        getTotalTypeRoom(searchItem);
+        let ignore = false;
+        !ignore && getListTypeRoom(pageNumber, searchItem);
+        return () => {
+            ignore = true;
+        };
     }, [pageNumber, searchItem]);
+
+    useEffect(() => {
+        let ignore = false;
+        !ignore && getTotalTypeRoom(searchItem);
+        return () => {
+            ignore = true;
+        };
+    }, [searchItem]);
 
     const setCurrentPage = (event) => {
         setPageNumber(event + 1);
@@ -82,16 +102,16 @@ function ListTypeRoom() {
                         {listItems.map((item, index) => (
                             <tr key={index} className={cx('wrapper-header')}>
                                 <td className={cx('size-1', 'center', 'item')}>{index + 1}</td>
-                                <td className={cx('size-3', 'item')}>{item.name}</td>
-                                <td className={cx('size-4', 'center', 'item')}>{item.description}</td>
+                                <td className={cx('size-3', 'item')}>{item?.name}</td>
+                                <td className={cx('size-4', 'center', 'item')}>{item?.description}</td>
                                 <td className={cx('size-2', 'center', 'item')}>
                                     <Button filled_1 onClick={handleShow}>
                                         Chỉnh sửa thông tin
                                     </Button>
-                                    {show ? <ModalInsert handleClose={handleClose} show={show} id={item._id} /> : ''}
+                                    {show ? <ModalInsert handleClose={handleClose} show={show} id={item?._id} /> : ''}
                                 </td>
                                 <td className={cx('size-1', 'center', 'item')}>
-                                    <Button className={cx('detai-info')} to={config.Routes.listRoom + `#${item._id}`}>
+                                    <Button className={cx('detai-info')} to={config.Routes.listRoom + `#${item?._id}`}>
                                         ...
                                     </Button>
                                 </td>

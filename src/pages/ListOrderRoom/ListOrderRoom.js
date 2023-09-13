@@ -1,6 +1,5 @@
 import classNames from 'classnames/bind';
 import styles from './ListOrderRoom.module.scss';
-
 import { SearchIcon } from '../../components/Icon';
 // import Select from '../../components/Select';
 import Scroll from '../../components/Scroll';
@@ -11,6 +10,7 @@ import Button from '../../components/Button';
 import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import { bookingApi } from '../../apis';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -30,25 +30,44 @@ const cx = classNames.bind(styles);
 function ListRoom() {
     const [searchItem, setSearchItem] = useState('');
     const [listItems, setlistItems] = useState([]);
-    const [pageCount, setPageCount] = useState(10);
+    const [pageCount, setPageCount] = useState(0);
 
     const [pageNumber, setPageNumber] = useState(1);
     const itemsPerPage = 4;
 
     const getListBooking = async (page, searchString = '') => {
-        const res = await bookingApi.getAllBooking(page, itemsPerPage, searchString);
-        setlistItems(res.data.data);
+        await bookingApi
+            .getAllBooking(page, itemsPerPage, searchString)
+            .then((res) => setlistItems(res.data.data))
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     const getTotalBooking = async (searchString = '') => {
-        const res = await bookingApi.getAllBookingSearch(searchString);
-        setPageCount(Math.ceil(res.data.data.length / itemsPerPage));
+        await bookingApi
+            .getAllBookingSearch(searchString)
+            .then((res) => setPageCount(Math.ceil(res.data.data.length / itemsPerPage)))
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     useEffect(() => {
-        getListBooking(pageNumber, searchItem);
-        getTotalBooking(searchItem);
+        let ignore = false;
+        !ignore && getListBooking(pageNumber, searchItem);
+        return () => {
+            ignore = true;
+        };
     }, [pageNumber, searchItem]);
+
+    useEffect(() => {
+        let ignore = false;
+        !ignore && getTotalBooking(searchItem);
+        return () => {
+            ignore = true;
+        };
+    }, [searchItem]);
 
     const setCurrentPage = (event) => {
         setPageNumber(event + 1);
@@ -92,15 +111,15 @@ function ListRoom() {
                         {listItems.map((item, index) => (
                             <tr key={index} className={cx('wrapper-header')}>
                                 <td className={cx('size-1', 'center', 'item')}>{index + 1}</td>
-                                <td className={cx('size-4', 'center', 'item')}>{item._id}</td>
-                                <td className={cx('size-3', 'center', 'item')}>{item.typeRoom}</td>
+                                <td className={cx('size-4', 'center', 'item')}>{item?._id}</td>
+                                <td className={cx('size-3', 'center', 'item')}>{item?.typeRoom}</td>
                                 <td className={cx('size-2', 'center', 'item')}>
-                                    {item.totalprice.toLocaleString('en-US')}
+                                    {item?.totalprice.toLocaleString('en-US')}
                                 </td>
                                 <td className={cx('size-1', 'center', 'item')}>
                                     <Button
                                         className={cx('detai-info')}
-                                        to={config.Routes.detaiOrderRoom + `#${item._id}`}
+                                        to={config.Routes.detaiOrderRoom + `#${item?._id}`}
                                     >
                                         ...
                                     </Button>

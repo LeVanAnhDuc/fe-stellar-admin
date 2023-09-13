@@ -19,10 +19,12 @@ function DetaiInfo() {
     const [userStatus, setUserStatus] = useState(user?.status);
 
     const getUser = async (email) => {
-        const res = await userApi.getAllUserSearch(email).catch((error) => {
-            toast.error(error.response?.data.message ?? 'Mất kết nối server!');
-        });
-        setUser(res?.data.data[0]);
+        await userApi
+            .getAllUserSearch(email)
+            .then((res) => setUser(res.data.data[0]))
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     const handelAccount = async () => {
