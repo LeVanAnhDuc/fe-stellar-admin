@@ -10,11 +10,11 @@ import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 
 function ModalInsert({ handleClose, show, id }) {
-    const [images, setImages] = useState({ id: id, list: [] });
+    const [images, setImages] = useState([]);
 
-    const update = async () => {
+    const update = async (id, images) => {
         await typeRoomApi
-            .updateTypeRoom()
+            .updateTypeRoom({ idTypeRoom: id, link_img: images })
             .then((res) => {
                 toast.success(res.data.message);
             })
@@ -25,15 +25,21 @@ function ModalInsert({ handleClose, show, id }) {
 
     const handleSetImg = (e) => {
         const fileList = e.target.files;
-        const imageArray = Array.from(fileList).map((file) => {
-            return URL.createObjectURL(file); // Or use FileReader to convert to base64
-        });
-        setImages((item) => (item.list = imageArray));
+
+        // const paths = [];
+        // for (let i = 0; i < fileList.length; i++) {
+        //     const file = fileList[i];
+        //     // const objectURL = URL.createObjectURL(file); // Tạo đường dẫn tạm thời từ tệp
+        //     const objectURL = file.name; // Tạo đường dẫn tạm thời từ tệp
+        //     paths.push(objectURL); // Thêm đường dẫn vào mảng
+        // }
+        console.log(fileList);
+        setImages(fileList);
     };
 
     const handleComfirm = () => {
+        update(id, images);
         handleClose();
-        update(images);
     };
 
     return (

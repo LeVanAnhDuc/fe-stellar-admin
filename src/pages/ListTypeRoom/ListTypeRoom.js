@@ -69,11 +69,17 @@ function ListTypeRoom() {
         setSearchItem(e.target.value);
     };
 
+    // setID
+    const [idItem, setIDItem] = useState();
+
     // model
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = (id) => {
+        setIDItem(id);
+        setShow(true);
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -105,10 +111,10 @@ function ListTypeRoom() {
                                 <td className={cx('size-3', 'item')}>{item?.name}</td>
                                 <td className={cx('size-4', 'center', 'item')}>{item?.description}</td>
                                 <td className={cx('size-2', 'center', 'item')}>
-                                    <Button filled_1 onClick={handleShow}>
+                                    <Button filled_1 onClick={() => handleShow(item._id)}>
                                         Chỉnh sửa thông tin
                                     </Button>
-                                    {show ? <ModalInsert handleClose={handleClose} show={show} id={item?._id} /> : ''}
+                                    {show ? <ModalInsert handleClose={handleClose} show={show} id={idItem} /> : ''}
                                 </td>
                                 <td className={cx('size-1', 'center', 'item')}>
                                     <Button className={cx('detai-info')} to={config.Routes.listRoom + `#${item?._id}`}>
