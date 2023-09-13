@@ -1,19 +1,16 @@
 import classNames from 'classnames/bind';
 import styles from './ListRoom.module.scss';
-
 import config from '../../config';
-
 import { SearchIcon } from '../../components/Icon';
 import Scroll from '../../components/Scroll';
 import Button from '../../components/Button';
 import ModalInsert from './ModalInsert/ModalInsert';
-
 import { Table } from 'react-bootstrap';
-
 import React, { useState, useEffect } from 'react';
 import Paginate from '../../components/Paginate/Paginate';
 import { useLocation } from 'react-router';
 import { roomApi } from '../../apis';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 function ListRoom() {
@@ -24,25 +21,41 @@ function ListRoom() {
     // Phan trang (paginate)
     const [searchItem, setSearchItem] = useState('');
     const [listItems, setlistItems] = useState([]);
-    const [pageCount, setPageCount] = useState(10);
+    const [pageCount, setPageCount] = useState(0);
 
     const [pageNumber, setPageNumber] = useState(1);
     const itemsPerPage = 5;
 
     const getListTypeRoom = async (page, searchString = '') => {
-        const res = await roomApi.getAllRoomSearch(page, itemsPerPage, searchString, id);
-        setlistItems(res.data.data);
+        await roomApi
+            .getAllRoomSearch(page, itemsPerPage, searchString, id)
+            .then((res) => setlistItems(res.data.data))
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     const getTotalTypeRoom = async (searchString = '') => {
-        const res = await roomApi.getAllRoom(searchString, id);
-        setPageCount(Math.ceil(res.data.data.length / itemsPerPage));
+        await roomApi
+            .getAllRoom(searchString, id)
+            .then((res) => setPageCount(Math.ceil(res.data.data.length / itemsPerPage)))
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     useEffect(() => {
-        getListTypeRoom(pageNumber, searchItem);
-        getTotalTypeRoom(searchItem);
+        let ignore = false;
+        !ignore && getListTypeRoom(pageNumber, searchItem);
+        return () => {
+            ignore = true;
+        };
     }, [pageNumber, searchItem]);
+
+    useEffect(() => {
+        let ignore = false;
+        !ignore && getTotalTypeRoom(searchItem);
+    }, [searchItem]);
 
     const setCurrentPage = (event) => {
         setPageNumber(event + 1);

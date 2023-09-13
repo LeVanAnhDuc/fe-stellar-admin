@@ -4,8 +4,8 @@ import { useState, useEffect, memo } from 'react';
 import Line from '../../../components/Chart/Line';
 import { dateTimeFormat, DateStrFormat, getFirstDayOfWeek, getLastDayOfWeek } from '../timeZone';
 import { bookingApi } from '../../../apis';
+import { toast } from 'react-toastify';
 
-const arr = ['Superior Double Or Twin', 'Deluxe Double', 'Executive City View', 'Deluxe Double'];
 const cx = classNames.bind(styles);
 function LineChart() {
     const [startDate, setStartDate] = useState(getFirstDayOfWeek());
@@ -24,8 +24,9 @@ function LineChart() {
     });
 
     useEffect(() => {
+        let ignore = false;
         async function fetchTotalAccounts() {
-            if (new Date(startDate) <= new Date(endDate)) {
+            if (new Date(startDate) <= new Date(endDate) && !ignore) {
                 await bookingApi
                     .getSalesStatistics(
                         dateTimeFormat(startDate, DateStrFormat.DATE),
@@ -48,9 +49,14 @@ function LineChart() {
                                 },
                             ],
                         });
+                    })
+                    .catch((error) => {
+                        toast.error(error.response?.data.message ?? 'Mất kết nối server!');
                     });
             } else {
-                alert('Ngày bắt đầu không thể lớn hơn ngày kết thúc.');
+                toast.error('Ngày bắt đầu không thể lớn hơn ngày kết thúc.');
+                setStartDate(getFirstDayOfWeek());
+                setEndDate(getLastDayOfWeek());
                 setSalesStatistics({
                     labels: [],
                     datasets: [
@@ -67,6 +73,9 @@ function LineChart() {
         }
 
         fetchTotalAccounts();
+        return () => {
+            ignore = true;
+        };
     }, [startDate, endDate]);
 
     const handleChangeStartDate = (e) => {
@@ -94,4 +103,4 @@ function LineChart() {
     );
 }
 
-export default memo(LineChart);
+export default LineChart;

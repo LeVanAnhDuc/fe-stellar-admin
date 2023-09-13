@@ -1,77 +1,108 @@
 import classNames from 'classnames/bind';
 import styles from './HistoryTransaction.module.scss';
-import { SearchIcon } from '../../components/Icon';
-
 import React, { useState, useEffect } from 'react';
-
 import Scroll from '../../components/Scroll';
-
-import { Table } from 'react-bootstrap';
 import Paginate from '../../components/Paginate/Paginate';
+import { Container, Row } from 'react-bootstrap';
+import { bookingApi } from '../../apis';
+import { toast } from 'react-toastify';
+import { useLocation } from 'react-router';
+import Button from '../../components/Button';
+import config from '../../config';
 
 const cx = classNames.bind(styles);
 
 function HistoryTransaction() {
-    const generateRandomData = () => {
-        const data = [];
-        for (let i = 1; i <= 5; i++) {
-            data.push({
-                Madonhang: 'Ref. BW20131689481945',
-                SoTienThanhToan: '2,515,000 VND',
-                ThoiGian: '13:00 - 06.08.2023',
-                TrangThai: 'Thất bại',
-                SoThe: '',
-                NganHang: '',
-            });
-        }
-        return data;
-    };
-
-    const randomData = generateRandomData();
+    const location = useLocation();
+    const userId = location.hash.substring(1);
+    const [listItems, setlistItems] = useState([]);
+    const [pageCount, setPageCount] = useState(1);
+    const [pageNumber, setPageNumber] = useState(1);
 
     // Phan trang (paginate)
-    const itemsPerPage = 2; // Số mục hiển thị trên mỗi trang
-    const pageCount = Math.ceil(randomData.length / itemsPerPage);
+    const itemsPerPage = 4; // Số mục hiển thị trên mỗi trang
+    const getListBooking = async (page, size = itemsPerPage) => {
+        const res = await bookingApi
+            .getTransactionHistoryForAdmin(userId, page, (size = itemsPerPage))
+            .then((res) => setlistItems(res.data.data))
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
+    };
 
-    const [currentPage, setCurrentPage] = useState(0);
-    const [currentItems, setCurrentItems] = useState([]);
+    const getTotalBooking = async () => {
+        const res = await bookingApi
+            .getTotalTransactionHistoryForAdmin(userId)
+            .then((res) => setPageCount(Math.ceil(res.data.data.totalTransactionHistory / itemsPerPage)))
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
+    };
 
     useEffect(() => {
-        const startIndex = currentPage * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        setCurrentItems(randomData.slice(startIndex, endIndex));
-    }, [currentPage]);
+        let ignore = false;
+        !ignore && getListBooking(pageNumber);
+        return () => {
+            ignore = true;
+        };
+    }, [pageNumber]);
+
+    useEffect(() => {
+        let ignore = false;
+        !ignore && getTotalBooking();
+        return () => {
+            ignore = true;
+        };
+    }, []);
+
+    const setCurrentPage = (event) => {
+        setPageNumber(event + 1);
+    };
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title')}>LỊCH SỬ GIAO DỊCH</div>
-            <div className={cx('search')}>
-                <input placeholder="Tìm kiếm..." className={cx('input')} />
-                <SearchIcon className={cx('icon')} />
-            </div>
-            <div className={cx('content')}>
-                {currentItems.map((item, index) => (
-                    <>
-                        <div className={cx('item')}>
-                            <div key={index} className={cx('title-item')}>
-                                Thanh toán CÔNG TY TNNH KẾ TOÁN
-                            </div>
-                            <div className={cx('detail-item')}>
-                                <Table bordered className={cx('table')}>
-                                    <tbody>
-                                        {Object.entries(item).map(([key, value], index) => (
-                                            <tr key={index} className={cx('info')}>
-                                                <td className={cx('key')}>{key}</td>
-                                                <td>{value}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
-                            </div>
-                        </div>
-                    </>
-                ))}
-                <Paginate pageCount={pageCount} setCurrentPage={setCurrentPage} />
+            <div className={cx('content-wrapper')}>
+                <Container fluid="md" className={cx('my-container')}>
+                    <Row className={cx('px-0', 'items')}>
+                        {listItems.map((item, index) => {
+                            return (
+                                <div key={'item' + index} className={cx('px-0', 'item')}>
+                                    <div>
+                                        <span>Mã giao dịch:</span>
+                                        <span>{item._id}</span>
+                                    </div>
+                                    <div>
+                                        <span>Loại phòng:</span>
+                                        <span>
+                                            {item.typeRoom} [{item.quantity}]
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>Ngày bắt đầu:</span>
+                                        <span>{item.checkinDate}</span>
+                                    </div>
+                                    <div>
+                                        <span>Ngày kết thúc:</span>
+                                        <span>{item.checkoutDate}</span>
+                                    </div>
+                                    <div>
+                                        <span>Tổng tiền:</span>
+                                        <span>{item.totalprice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</span>
+                                    </div>
+                                    <div>
+                                        <span>Trạng thái:</span>
+                                        <span>{item.status}</span>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </Row>
+                    <Paginate pageCount={pageCount} setCurrentPage={setCurrentPage} />
+                </Container>
+                <Button className={cx('btn')} filled_1 to={config.Routes.infoGuest}>
+                    Thoát
+                </Button>
             </div>
             <Scroll />
         </div>

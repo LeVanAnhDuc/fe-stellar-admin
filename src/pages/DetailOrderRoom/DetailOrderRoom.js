@@ -28,6 +28,7 @@ function DetaiOrderRoom() {
     useEffect(() => {
         getItem(id);
     }, [id]);
+    
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title')}>THÔNG TIN CHI TIẾT ĐƠN HÀNG</div>

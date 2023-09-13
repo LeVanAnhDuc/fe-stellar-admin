@@ -4,6 +4,7 @@ import { useState, useEffect, memo } from 'react';
 import Pie from '../../../components/Chart/Pie';
 import { dateTimeFormat, DateStrFormat } from '../timeZone';
 import { typeRoomApi, roomApi } from '../../../apis';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -27,21 +28,37 @@ function PieChart() {
     const handleChangeDate = (e) => {
         setDate(dateTimeFormat(e.target.value, DateStrFormat.INPUT_TYPE_DATE));
     };
+
     const handleChangeTypeRoom = (e) => {
         setTypeRoomId(e.target.value);
     };
 
     useEffect(() => {
+        let ignore = false;
         async function fetchTypeRoomNames() {
-            await typeRoomApi.getTypeRoomNames().then((response) => {
-                setTypeRoomNames(
-                    [...typeRoomNames, ...response.data.data].filter(
-                        (item, index, arr) => arr.map((element) => element._id).indexOf(item._id) === index,
-                    ),
-                );
-            });
+            await typeRoomApi
+                .getTypeRoomNames()
+                .then((response) => {
+                    setTypeRoomNames(
+                        [...typeRoomNames, ...response.data.data].filter(
+                            (item, index, arr) => arr.map((element) => element._id).indexOf(item._id) === index,
+                        ),
+                    );
+                })
+                .catch((error) => {
+                    toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+                });
         }
 
+        !ignore && fetchTypeRoomNames();
+
+        return () => {
+            ignore = true;
+        };
+    }, []);
+
+    useEffect(() => {
+        let ignore = false;
         async function fetchNumberStatusRooms() {
             await roomApi
                 .getNumberStatusRooms(dateTimeFormat(date, DateStrFormat.DATE), typeRoomId)
@@ -61,11 +78,17 @@ function PieChart() {
                             },
                         ],
                     });
+                })
+                .catch((error) => {
+                    toast.error(error.response?.data.message ?? 'Mất kết nối server!');
                 });
         }
 
-        fetchTypeRoomNames();
-        fetchNumberStatusRooms();
+        !ignore && fetchNumberStatusRooms();
+
+        return () => {
+            ignore = true;
+        };
     }, [date, typeRoomId]);
 
     return (
@@ -88,4 +111,4 @@ function PieChart() {
     );
 }
 
-export default memo(PieChart);
+export default PieChart;

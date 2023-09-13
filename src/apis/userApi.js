@@ -28,4 +28,13 @@ const getTotalAccounts = async () => {
     }
 };
 
-export default { getAllUser, getTotalAccounts, getAllUserSearch };
+const updateStatus = async (userId) => {
+    try {
+        const response = await axios.patch('/user/update-status', { userId });
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export default { getAllUser, getTotalAccounts, getAllUserSearch, updateStatus };

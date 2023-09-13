@@ -9,7 +9,9 @@ const Routes = {
     listTypeRoom: '/danh-sach-loai-phong',
     listRoom: '/danh-sach-phong',
     utilities: '/tien-ich',
+    historyTransaction: '/lich-su-giao-dich',
     error: '*',
+
 };
 
 export default Routes;

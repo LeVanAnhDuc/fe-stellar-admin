@@ -9,6 +9,7 @@ import DetailInfo from '../pages/DetaiInfo/DetaiInfo';
 import DetailOrderRoom from '../pages/DetailOrderRoom';
 import SignIn from '../pages/SignIn/SignIn';
 import Error404 from '../pages/Error404';
+import HistoryTransaction from '../pages/HistoryTransaction';
 
 import config from '../config';
 
@@ -27,6 +28,7 @@ const privateRoute = [
     { path: config.Routes.listTypeRoom, component: ListTypeRoom },
     { path: config.Routes.listRoom, component: ListRoom },
     { path: config.Routes.utilities, component: Utilities },
+    { path: config.Routes.historyTransaction, component: HistoryTransaction },
 ];
 
 export { publishRoute, privateRoute };

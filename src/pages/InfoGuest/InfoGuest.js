@@ -1,42 +1,58 @@
 import classNames from 'classnames/bind';
 import styles from './InfoGuest.module.scss';
-
 import config from '../../config';
-
 import { SearchIcon } from '../../components/Icon';
 import Scroll from '../../components/Scroll';
 import Button from '../../components/Button';
-
 import { Table } from 'react-bootstrap';
-
 import React, { useState, useEffect } from 'react';
 import Paginate from '../../components/Paginate/Paginate';
 import { userApi } from '../../apis/index';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
 function InfoGuest() {
     const [searchItem, setSearchItem] = useState('');
     const [listItems, setlistItems] = useState([]);
-    const [pageCount, setPageCount] = useState(10);
+    const [pageCount, setPageCount] = useState(0);
 
     const [pageNumber, setPageNumber] = useState(1);
     const itemsPerPage = 4;
 
     const getListUser = async (page, searchString = '') => {
-        const res = await userApi.getAllUser(page, itemsPerPage, searchString);
-        setlistItems(res.data.data);
+        await userApi
+            .getAllUser(page, itemsPerPage, searchString)
+            .then((res) => setlistItems(res.data.data))
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     const getTotalUser = async (searchString = '') => {
-        const res = await userApi.getAllUserSearch(searchString);
-        setPageCount(Math.ceil(res.data.data.length / itemsPerPage));
+        const res = await userApi
+            .getAllUserSearch(searchString)
+            .then((res) => setPageCount(Math.ceil(res.data.data.length / itemsPerPage)))
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     useEffect(() => {
-        getListUser(pageNumber, searchItem);
-        getTotalUser(searchItem);
+        let ignore = false;
+        !ignore && getListUser(pageNumber, searchItem);
+        return () => {
+            ignore = true;
+        };
     }, [pageNumber, searchItem]);
+
+    useEffect(() => {
+        let ignore = false;
+        !ignore && getTotalUser(searchItem);
+        return () => {
+            ignore = true;
+        };
+    }, [searchItem]);
 
     const setCurrentPage = (event) => {
         setPageNumber(event + 1);
@@ -45,6 +61,7 @@ function InfoGuest() {
     const handleChangeSearch = (e) => {
         setSearchItem(e.target.value);
     };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('title')}>THÔNG TIN NGƯỜI DÙNG</div>

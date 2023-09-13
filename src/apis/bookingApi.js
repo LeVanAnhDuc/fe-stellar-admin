@@ -50,10 +50,30 @@ const getSalesStatistics = async (startDate, endDate) => {
     }
 };
 
+const getTotalTransactionHistoryForAdmin = async (userId) => {
+    try {
+        const response = await axios.get(`/booking-room/get-total-transaction-history-for-admin?userId=${userId}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getTransactionHistoryForAdmin = async (userId, page, size) => {
+    try {
+        const response = await axios.get(`/booking-room/get-transaction-history-for-admin?userId=${userId}&page=${page}&size=${size}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export default {
     getAllBooking,
     getAllBookingSearch,
     getTotalAllTransactionHistory,
     getSalesStatistics,
     getBookingByID,
+    getTotalTransactionHistoryForAdmin,
+    getTransactionHistoryForAdmin
 };

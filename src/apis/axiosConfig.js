@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import config from '../config';
 
 const instance = axios.create({
     baseURL: 'http://localhost:8080',
@@ -65,9 +63,6 @@ instance.interceptors.response.use(
                     return instance(originalRequest);
                 })
                 .catch((error) => {
-                    localStorage.clear();
-                    const navigate = useNavigate();
-                    navigate(config.Routes.signIn);
                     return Promise.reject(error);
                 });
         } else {
