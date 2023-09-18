@@ -12,6 +12,7 @@ import { BartIcon } from '../../../components/Icon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCompass,
+    faContactCard,
     faHistory,
     faHouse,
     faHouseMedicalFlag,
@@ -49,6 +50,11 @@ const NAV = [
         title: 'Tiện ích',
         to: config.Routes.utilities,
         icon: <FontAwesomeIcon icon={faCompass} />,
+    },
+    {
+        title: 'Danh sách liên hệ',
+        to: config.Routes.contact,
+        icon: <FontAwesomeIcon icon={faContactCard} />,
     },
 ];
 

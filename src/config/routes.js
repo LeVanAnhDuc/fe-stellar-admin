@@ -10,8 +10,8 @@ const Routes = {
     listRoom: '/danh-sach-phong',
     utilities: '/tien-ich',
     historyTransaction: '/lich-su-giao-dich',
+    contact: '/lien-he',
     error: '*',
-
 };
 
 export default Routes;
