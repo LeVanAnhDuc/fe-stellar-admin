@@ -4,10 +4,11 @@ import config from '../../config';
 import { SearchIcon } from '../../components/Icon';
 import Scroll from '../../components/Scroll';
 import Button from '../../components/Button';
-import ModalInsert from './ModalInsert/ModalInsert';
 import { Table } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import Paginate from '../../components/Paginate/Paginate';
+import ModalInsert from './ModalInsert/ModalInsert';
+import ModalUpdate from './ModalUpdate/ModalUpdate';
 import { useLocation } from 'react-router';
 import { roomApi } from '../../apis';
 import { toast } from 'react-toastify';
@@ -22,6 +23,10 @@ function ListRoom() {
     const [searchItem, setSearchItem] = useState('');
     const [listItems, setlistItems] = useState([]);
     const [pageCount, setPageCount] = useState(0);
+    const [showInsert, setShowInsert] = useState(false);
+    const [showUpdate, setShowUpdate] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
+    const [idRoom, setIdRoom] = useState();
 
     const [pageNumber, setPageNumber] = useState(1);
     const itemsPerPage = 5;
@@ -50,7 +55,7 @@ function ListRoom() {
         return () => {
             ignore = true;
         };
-    }, [pageNumber, searchItem]);
+    }, [pageNumber, searchItem, showUpdate, showInsert, isDelete]);
 
     useEffect(() => {
         let ignore = false;
@@ -65,11 +70,26 @@ function ListRoom() {
         setSearchItem(e.target.value);
     };
 
-    // model
-    const [show, setShow] = useState(false);
+    const handleInsert_Close = () => setShowInsert(false);
+    const handleInsert_Show = () => setShowInsert(true);
+    const handleUpdate_Close = () => setShowUpdate(false);
+    const handleUpdate_Show = () => setShowUpdate(true);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handeDelete = async (id) => {
+        if (id) {
+            await roomApi
+                .deleteRoom(id)
+                .then((res) => {
+                    toast.success(res.data.message);
+                    setIsDelete(!isDelete);
+                })
+                .catch((error) => {
+                    toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+                });
+        } else {
+            toast.error('Id không tồn tại!');
+        }
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -90,7 +110,7 @@ function ListRoom() {
                             <th className={cx('size-1', 'center', 'title-item')}>STT</th>
                             <th className={cx('size-2', 'center', 'title-item')}>Mã phòng</th>
                             <th className={cx('size-2', 'center', 'title-item')}>Loại giường</th>
-                            <th className={cx('size-2', 'center', 'title-item')}>Sức chứa</th>
+                            <th className={cx('size-2', 'center', 'title-item')}>Diện tích</th>
                             <th className={cx('size-2', 'center', 'title-item')}>Giá</th>
                             <th className={cx('size-2', 'center', 'title-item')}>View</th>
                             <th className={cx('size-3', 'center', 'title-item')}></th>
@@ -100,17 +120,23 @@ function ListRoom() {
                         {listItems.map((item, index) => (
                             <tr key={index} className={cx('wrapper-header')}>
                                 <td className={cx('size-1', 'center', 'item')}>{index + 1}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.roomNumber}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.typeBed}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.acreage}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.prices}</td>
-                                <td className={cx('size-2', 'center', 'item')}>{item.view}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item?.roomNumber}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item?.typeBed}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item?.acreage}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item?.prices}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item?.view}</td>
                                 <td className={cx('size-3', 'center', 'item')}>
-                                    <Button className={cx('btn-small')} filled_1 onClick={handleShow}>
+                                    <Button
+                                        className={cx('btn-small')}
+                                        filled_1
+                                        onClick={() => {
+                                            setIdRoom(item?._id);
+                                            handleUpdate_Show();
+                                        }}
+                                    >
                                         Sửa
                                     </Button>
-                                    <ModalInsert handleClose={handleClose} show={show} />
-                                    <Button className={cx('btn-small')} filled_1>
+                                    <Button className={cx('btn-small')} filled_1 onClick={() => handeDelete(item?._id)}>
                                         Xóa
                                     </Button>
                                 </td>
@@ -122,10 +148,12 @@ function ListRoom() {
                     <Button className={cx('btn')} filled_1 to={config.Routes.listTypeRoom}>
                         Quay lại
                     </Button>
-                    <Button className={cx('btn')} filled_1 onClick={handleShow}>
+                    <Button className={cx('btn')} filled_1 onClick={handleInsert_Show}>
                         Thêm
                     </Button>
-                    <ModalInsert handleClose={handleClose} show={show} />
+                    {showUpdate && <ModalUpdate handleClose={handleUpdate_Close} show={showUpdate} idRoom={idRoom} />}
+
+                    {showInsert && <ModalInsert handleClose={handleInsert_Close} show={showInsert} idTypeRoom={id} />}
                 </div>
                 <Paginate pageCount={pageCount} setCurrentPage={setCurrentPage} />
             </div>

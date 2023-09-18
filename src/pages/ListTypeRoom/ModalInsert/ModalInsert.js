@@ -10,35 +10,36 @@ import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 
 function ModalInsert({ handleClose, show, id }) {
-    const [images, setImages] = useState([]);
+    const [formData, setFormData] = useState();
+    const [loading, setLoading] = useState(false);
 
-    const update = async (id, images) => {
+    const update = async () => {
+        setLoading(true);
         await typeRoomApi
-            .updateTypeRoom({ idTypeRoom: id, link_img: images })
+            .updateTypeRoom(formData)
             .then((res) => {
                 toast.success(res.data.message);
             })
             .catch((error) => {
                 toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
     const handleSetImg = (e) => {
-        const fileList = e.target.files;
-
-        // const paths = [];
-        // for (let i = 0; i < fileList.length; i++) {
-        //     const file = fileList[i];
-        //     // const objectURL = URL.createObjectURL(file); // Tạo đường dẫn tạm thời từ tệp
-        //     const objectURL = file.name; // Tạo đường dẫn tạm thời từ tệp
-        //     paths.push(objectURL); // Thêm đường dẫn vào mảng
-        // }
-        console.log(fileList);
-        setImages(fileList);
+        const fileList = [...e.target.files];
+        const getFormData = new FormData();
+        fileList.forEach((image) => {
+            getFormData.append('image', image);
+        });
+        getFormData.append('idTypeRoom', id);
+        setFormData(getFormData);
     };
 
     const handleComfirm = () => {
-        update(id, images);
+        update();
         handleClose();
     };
 
@@ -53,7 +54,7 @@ function ModalInsert({ handleClose, show, id }) {
                         <Form.Label className={cx('label')}>Hình ảnh</Form.Label>
                         <Form.Control
                             className={cx('input-modal')}
-                            src={images}
+                            src={formData}
                             onChange={handleSetImg}
                             multiple
                             type="file"

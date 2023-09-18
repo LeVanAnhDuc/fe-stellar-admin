@@ -29,16 +29,8 @@ const getAllTypeRoom = async (page, size, searchString) => {
     }
 };
 
-const updateTypeRoom = async (idTypeRoom, files) => {
+const updateTypeRoom = async (formData) => {
     try {
-        const formData = new FormData();
-        files.forEach((file) => {
-            formData.append('image', file);
-        });
-
-        // Thêm idTypeRoom vào FormData
-        formData.append('idTypeRoom', idTypeRoom);
-
         const response = await axios.patch(`type-room/update-typeroom`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
