@@ -1,53 +1,90 @@
 import { Modal, Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
-
 import styles from '../Utilities.module.scss';
 import Button from '../../../components/Button';
 import { useState } from 'react';
-
 import { useEffect } from 'react';
+import { utilitiesApi } from '../../../apis';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
-function ModalUpdate({ handleClose, show, itemID, itemName, itemDesc, UpdateUtilities }) {
-    const [id, setId] = useState();
-    const [nameItem, setNameItem] = useState();
-    const [imageItem, setImageItem] = useState();
-    const [desc, setDesc] = useState();
+function ModalUpdate({ handleClose, show, itemID, itemName, itemDesc, itemType }) {
+    const [id, setId] = useState('');
+    const [name, setName] = useState('');
+    const [desc, setDesc] = useState('');
+    const [type, setType] = useState('');
+    const [fileList, setFileList] = useState([]);
+    const [formData, setFormData] = useState();
 
     useEffect(() => {
-        setId(itemID);
-        setNameItem(itemName);
-        setDesc(itemDesc);
-    }, [itemID, itemName, itemDesc]);
+        let ignore = false;
+        if (!ignore) {
+            setId(itemID);
+            setName(itemName);
+            setDesc(itemDesc);
+            setType(itemType);
+        }
+        return () => {
+            ignore = true;
+        };
+    }, []);
 
     const handleChangeName = (e) => {
         const value = e.target.value;
-        setNameItem(value);
+        setName(value);
     };
+
     const handleChangeDesc = (e) => {
         const value = e.target.value;
         setDesc(value);
     };
+
+    const handelChangeType = (e) => {
+        setType(e.target.value);
+    };
+
     const handleSetImg = (e) => {
-        const fileList = e.target.files;
-
-        const imageArray = Array.from(fileList).map((file) => {
-            return URL.createObjectURL(file); // Or use FileReader to convert to base64
-        });
-
-        setImageItem(imageArray);
+        setFileList([...e.target.files]);
     };
 
-    const handleComfirm = () => {
-        handleClose();
-        UpdateUtilities(id, nameItem, imageItem, desc);
+    useEffect(() => {
+        let ignore = false;
+        if (!ignore) {
+            const getFormData = new FormData();
+            fileList.forEach((image) => {
+                getFormData.append('image', image);
+            });
+            getFormData.append('id', id);
+            getFormData.append('name', name);
+            getFormData.append('description', desc);
+            getFormData.append('type', type);
+
+            setFormData(getFormData);
+        }
+        return () => {
+            ignore = true;
+        };
+    }, [fileList, name, desc, type]);
+
+    // update item
+    const UpdateUtilities = async () => {
+        await utilitiesApi
+            .updateUtilities(formData)
+            .then((res) => {
+                toast.success(res.data.message);
+                handleClose();
+            })
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
+
     return (
         <>
             <Modal show={show} onHide={handleClose} backdrop="static" size="lg" centered className={cx('modal')}>
                 <Modal.Header closeButton className={cx('header')}>
-                    <Modal.Title className={cx('title')}>CHỈNH SỬA DANH SÁCH PHÒNG</Modal.Title>
+                    <Modal.Title className={cx('title')}>CHỈNH SỬA DANH SÁCH TIỆN ÍCH</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -57,7 +94,7 @@ function ModalUpdate({ handleClose, show, itemID, itemName, itemDesc, UpdateUtil
                                 className={cx('input-modal')}
                                 type="text"
                                 autoFocus
-                                value={nameItem}
+                                value={name}
                                 onChange={handleChangeName}
                             />
                         </Form.Group>
@@ -67,8 +104,9 @@ function ModalUpdate({ handleClose, show, itemID, itemName, itemDesc, UpdateUtil
                                 className={cx('input-modal')}
                                 type="file"
                                 rows={3}
-                                src={imageItem}
+                                src={fileList}
                                 onChange={handleSetImg}
+                                multiple
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
@@ -82,13 +120,20 @@ function ModalUpdate({ handleClose, show, itemID, itemName, itemDesc, UpdateUtil
                                 value={desc}
                             />
                         </Form.Group>
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                            <Form.Label className={cx('label')}>Loại tiện ích</Form.Label>
+                            <Form.Select className={cx('input-modal')} value={type} onChange={handelChangeType}>
+                                <option>Restaurant</option>
+                                <option>Utilities</option>
+                            </Form.Select>
+                        </Form.Group>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className={cx('btn')} filled_1 onClick={handleClose}>
                         Đóng
                     </Button>
-                    <Button className={cx('btn')} filled_1 onClick={handleComfirm}>
+                    <Button className={cx('btn')} filled_1 onClick={UpdateUtilities}>
                         Xác nhận
                     </Button>
                 </Modal.Footer>

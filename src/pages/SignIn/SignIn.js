@@ -20,6 +20,8 @@ function SignIn() {
     const [validated, setValidated] = useState(false); // validate
     const [isValidEmail, setIsValidEmail] = useState(true); // validate mail
     const [isValidPassword, setIsValidPassword] = useState(true); // validate password
+    const [isShowPass, setIsShowPass] = useState(false); // show
+    const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
     const notificationRef = useRef(null);
@@ -57,6 +59,7 @@ function SignIn() {
                     notificationRef.current.textContent = response.data.message;
                     dispatch(setIsSignIn(true));
                     navigate(config.Routes.home);
+                    // setIsLoading(false);
                 })
                 .catch((error) => {
                     notificationRef.current.classList.remove(cx('hidden'));
@@ -68,6 +71,7 @@ function SignIn() {
 
     return (
         <>
+            {/* {isLoading && <div className="loading"></div>} */}
             <div className={cx('wrapper')}>
                 <Form noValidate validated={validated} className={cx('form')}>
                     <h1>Login</h1>
@@ -92,14 +96,18 @@ function SignIn() {
                         <Form.Control
                             className={cx('input')}
                             required
-                            type="password"
+                            type={(isShowPass && 'text') || 'password'}
                             placeholder="Password"
                             value={password}
                             onChange={handleChangePassWord}
                             isInvalid={!isValidPassword}
                             onBlur={validatePassword}
                         />
-                        <FontAwesomeIcon icon={faLock} className={cx('icon')} />
+                        <FontAwesomeIcon
+                            icon={faLock}
+                            className={cx('icon')}
+                            onClick={() => setIsShowPass(!isShowPass)}
+                        />
                         <Form.Control.Feedback type="invalid">Invalid password</Form.Control.Feedback>
                     </Form.Group>
 

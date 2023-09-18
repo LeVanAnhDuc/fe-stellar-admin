@@ -60,7 +60,10 @@ function ListRoom() {
     useEffect(() => {
         let ignore = false;
         !ignore && getTotalTypeRoom(searchItem);
-    }, [searchItem]);
+        return () => {
+            ignore = true;
+        };
+    }, [searchItem, showUpdate, showInsert, isDelete]);
 
     const setCurrentPage = (event) => {
         setPageNumber(event + 1);
@@ -76,19 +79,15 @@ function ListRoom() {
     const handleUpdate_Show = () => setShowUpdate(true);
 
     const handeDelete = async (id) => {
-        if (id) {
-            await roomApi
-                .deleteRoom(id)
-                .then((res) => {
-                    toast.success(res.data.message);
-                    setIsDelete(!isDelete);
-                })
-                .catch((error) => {
-                    toast.error(error.response?.data.message ?? 'Mất kết nối server!');
-                });
-        } else {
-            toast.error('Id không tồn tại!');
-        }
+        await roomApi
+            .deleteRoom(id)
+            .then((res) => {
+                toast.success(res.data.message);
+                setIsDelete(!isDelete);
+            })
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     return (

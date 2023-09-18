@@ -1,18 +1,13 @@
 import classNames from 'classnames/bind';
 import styles from './ListTypeRoom.module.scss';
-
 import config from '../../config';
-
 import { SearchIcon } from '../../components/Icon';
 import Scroll from '../../components/Scroll';
 import Button from '../../components/Button';
 import ModalInsert from './ModalInsert/ModalInsert';
-
 import { Table } from 'react-bootstrap';
-
 import React, { useState, useEffect } from 'react';
 import Paginate from '../../components/Paginate/Paginate';
-
 import { typeRoomApi } from '../../apis';
 import { toast } from 'react-toastify';
 
@@ -23,6 +18,7 @@ function ListTypeRoom() {
     const [searchItem, setSearchItem] = useState('');
     const [listItems, setlistItems] = useState([]);
     const [pageCount, setPageCount] = useState(0);
+    const [show, setShow] = useState(false);
 
     const [pageNumber, setPageNumber] = useState(1);
     const itemsPerPage = 2;
@@ -51,7 +47,7 @@ function ListTypeRoom() {
         return () => {
             ignore = true;
         };
-    }, [pageNumber, searchItem]);
+    }, [pageNumber, searchItem, show]);
 
     useEffect(() => {
         let ignore = false;
@@ -73,8 +69,6 @@ function ListTypeRoom() {
     const [idItem, setIDItem] = useState();
 
     // model
-    const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = (id) => {
         setIDItem(id);

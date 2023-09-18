@@ -17,7 +17,6 @@ import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 
 function Utilities() {
-    const [isLoading, setIsLoading] = useState(false);
     // model
     const [showUpdate, setShowUpdate] = useState(false);
     const handleCloseUpdate = () => setShowUpdate(false);
@@ -27,88 +26,91 @@ function Utilities() {
     const handleCloseInsert = () => setShowInsert(false);
     const handleShowInsert = () => setShowInsert(true);
 
+    const [isDelete, setIsDelete] = useState(false);
+
     // get list item
     const [searchItem, setSearchItem] = useState('');
     const [listItems, setlistItems] = useState([]);
     const [pageCount, setPageCount] = useState(10);
-
     const [pageNumber, setPageNumber] = useState(1);
     const itemsPerPage = 2;
 
+    const handleChangeSearch = (e) => {
+        setSearchItem(e.target.value);
+    };
+
     const getListUtilities = async (page, searchString = '') => {
-        const res = await utilitiesApi.getAllUtilities(page, itemsPerPage, searchString);
-        setlistItems(res.data.data);
-        console.log(res.data.data);
+        await utilitiesApi
+            .getAllUtilities(page, itemsPerPage, searchString)
+            .then((res) => {
+                setlistItems(res.data.data);
+            })
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     const getTotalUtilities = async (searchString = '') => {
-        const res = await utilitiesApi.getAllUtilitiesSearch((searchString = ''));
-        setPageCount(Math.ceil(res.data.data.length / itemsPerPage));
+        await utilitiesApi
+            .getAllUtilitiesSearch((searchString = ''))
+            .then((res) => {
+                setPageCount(Math.ceil(res.data.data.length / itemsPerPage));
+            })
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     useEffect(() => {
-        getListUtilities(pageNumber, searchItem);
-        getTotalUtilities(searchItem);
-    }, [pageNumber, searchItem, isLoading]);
+        let ignore = false;
+        !ignore && getListUtilities(pageNumber, searchItem);
+        return () => {
+            ignore = true;
+        };
+    }, [pageNumber, searchItem, showUpdate, showInsert, isDelete]);
+
+    useEffect(() => {
+        let ignore = false;
+        if (!ignore) {
+            getTotalUtilities(searchItem);
+        }
+        return () => {
+            ignore = true;
+        };
+    }, [searchItem]);
 
     const setCurrentPage = (event) => {
         setPageNumber(event + 1);
-    };
-
-    const handleChangeSearch = (e) => {
-        setSearchItem(e.target.value);
     };
 
     // get ITEM
     const [idItem, setIdItem] = useState();
     const [nameItem, setNameItem] = useState();
     const [desc, setDesc] = useState();
-    const handleGetUser = (index, name, description) => {
+    const [typeItem, setTypeItem] = useState();
+    const handleGetUser = (index, name, description, type) => {
         handleShowUpdate();
         setIdItem(index);
         setNameItem(name);
         setDesc(description);
+        setTypeItem(type);
     };
 
-    // insert
-    const PostUtilities = async (name, image, desc) => {
-        try {
-            await utilitiesApi.postUtilities({ name, image, description: desc });
-            setIsLoading(!isLoading);
-            toast.success('Thành công');
-        } catch (error) {
-            toast.error(error);
-        }
-    };
-
-    // update item
-    const UpdateUtilities = async (id, nameItem, imageItem, desc) => {
-        try {
-            await utilitiesApi.updateUtilities({ id, name: nameItem, image: imageItem, description: desc });
-            setIsLoading(!isLoading);
-            toast.success('Thành công');
-        } catch (error) {
-            toast.error(error);
-        }
-    };
-
-    // delete item
-    const deleteItem = async (id) => {
-        try {
-            await utilitiesApi.deleteUtilities(id);
-            setIsLoading(!isLoading);
-            toast.success('Thành công');
-        } catch (error) {
-            toast.error('Thất bại');
-        }
-    };
-    const handleDelete = (id) => {
-        deleteItem(id);
+    const handelDelete = async (id) => {
+        await utilitiesApi
+            .deleteUtilities(id)
+            .then((res) => {
+                toast.success(res.data.message);
+                setIsDelete(!isDelete);
+            })
+            .catch((error) => {
+                toast.error(error.response?.data.message ?? 'Mất kết nối server!');
+            });
     };
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('title')}>DANH SÁCH LOẠI PHÒNG</div>
+            <div className={cx('title')}>DANH SÁCH TIỆN ÍCH</div>
             <div className={cx('search')}>
                 <input
                     placeholder="Tìm kiếm..."
@@ -125,7 +127,7 @@ function Utilities() {
                             <th className={cx('size-1', 'center', 'title-item')}>STT</th>
                             <th className={cx('size-2', 'center', 'title-item')}>Tên tiện ích</th>
                             <th className={cx('size-4', 'center', 'title-item')}>Mô tả</th>
-                            {/* <th className={cx('size-2', 'center', 'title-item')}>Hình ảnh</th> */}
+                            <th className={cx('size-2', 'center', 'title-item')}>Loại tiện ích</th>
                             <th className={cx('size-2', 'center', 'title-item')}></th>
                         </tr>
                     </thead>
@@ -133,26 +135,36 @@ function Utilities() {
                         {listItems.map((item, index) => (
                             <tr key={index} className={cx('wrapper-header')}>
                                 <td className={cx('size-1', 'center', 'item')}>{index + 1}</td>
-                                <td className={cx('size-2', 'item')}>{item.name}</td>
-                                <td className={cx('size-4', 'center', 'item')}>{item.description}</td>
-                                {/* <td className={cx('size-2', 'center', 'item')}></td> */}
+                                <td className={cx('size-2', 'item')}>{item?.name}</td>
+                                <td className={cx('size-4', 'center', 'item')}>{item?.description}</td>
+                                <td className={cx('size-2', 'center', 'item')}>{item?.type}</td>
+
                                 <td className={cx('size-2', 'center', 'item')}>
                                     <Button
                                         className={cx('btn-small')}
                                         filled_1
-                                        onClick={() => handleGetUser(item._id, item.name, item.description)}
+                                        onClick={() =>
+                                            handleGetUser(item?._id, item?.name, item?.description, item?.type)
+                                        }
                                     >
                                         Sửa
                                     </Button>
-                                    <ModalUpdate
-                                        handleClose={handleCloseUpdate}
-                                        show={showUpdate}
-                                        itemName={nameItem}
-                                        itemDesc={desc}
-                                        itemID={idItem}
-                                        UpdateUtilities={UpdateUtilities}
-                                    />
-                                    <Button className={cx('btn-small')} filled_1 onClick={() => handleDelete(item._id)}>
+                                    {showUpdate && (
+                                        <ModalUpdate
+                                            handleClose={handleCloseUpdate}
+                                            show={showUpdate}
+                                            itemName={nameItem}
+                                            itemDesc={desc}
+                                            itemID={idItem}
+                                            itemType={typeItem}
+                                        />
+                                    )}
+
+                                    <Button
+                                        className={cx('btn-small')}
+                                        filled_1
+                                        onClick={() => handelDelete(item?._id)}
+                                    >
                                         Xóa
                                     </Button>
                                 </td>
@@ -164,7 +176,7 @@ function Utilities() {
                     <Button className={cx('btn')} filled_1 onClick={handleShowInsert}>
                         Thêm
                     </Button>
-                    <ModalInsert handleClose={handleCloseInsert} show={showInsert} PostUtilities={PostUtilities} />
+                    {showInsert && <ModalInsert handleClose={handleCloseInsert} show={showInsert} />}
                 </div>
                 <Paginate pageCount={pageCount} setCurrentPage={setCurrentPage} />
             </div>

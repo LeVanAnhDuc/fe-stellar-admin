@@ -19,6 +19,7 @@ function Contact() {
     const [searchItem, setSearchItem] = useState('');
     const [listItems, setlistItems] = useState([]);
     const [pageCount, setPageCount] = useState(0);
+    const [isUpdate, setIsUpdate] = useState(false);
 
     const [pageNumber, setPageNumber] = useState(1);
     const itemsPerPage = 6;
@@ -28,7 +29,6 @@ function Contact() {
             .getAllContact(page, itemsPerPage, searchString)
             .then((res) => {
                 setlistItems(res.data.data);
-                console.log(res.data.data);
             })
             .catch((error) => {
                 toast.error(error.response?.data.message ?? 'Mất kết nối server!');
@@ -46,7 +46,10 @@ function Contact() {
     const updatetContact = async (id) => {
         await contactApi
             .updateContact({ _id: id })
-            .then()
+            .then((res) => {
+                toast.success(res.data.message);
+                setIsUpdate(!isUpdate);
+            })
             .catch((error) => {
                 toast.error(error.response?.data.message ?? 'Mất kết nối server!');
             });
@@ -58,7 +61,7 @@ function Contact() {
         return () => {
             ignore = true;
         };
-    }, [pageNumber, searchItem, loading]);
+    }, [pageNumber, searchItem, loading, isUpdate]);
 
     useEffect(() => {
         let ignore = false;

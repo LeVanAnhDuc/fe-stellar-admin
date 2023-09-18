@@ -4,44 +4,46 @@ import classNames from 'classnames/bind';
 import styles from '../ListTypeRoom.module.scss';
 import Button from '../../../components/Button';
 import { typeRoomApi } from '../../../apis';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
 function ModalInsert({ handleClose, show, id }) {
     const [formData, setFormData] = useState();
-    const [loading, setLoading] = useState(false);
+    const [fileList, setFileList] = useState([]);
 
     const update = async () => {
-        setLoading(true);
         await typeRoomApi
             .updateTypeRoom(formData)
             .then((res) => {
                 toast.success(res.data.message);
+                handleClose();
             })
             .catch((error) => {
                 toast.error(error.response?.data.message ?? 'Mất kết nối server!');
-            })
-            .finally(() => {
-                setLoading(false);
             });
     };
 
     const handleSetImg = (e) => {
-        const fileList = [...e.target.files];
-        const getFormData = new FormData();
-        fileList.forEach((image) => {
-            getFormData.append('image', image);
-        });
-        getFormData.append('idTypeRoom', id);
-        setFormData(getFormData);
+        setFileList([...e.target.files]);
     };
+    
 
-    const handleComfirm = () => {
-        update();
-        handleClose();
-    };
+    useEffect(() => {
+        let ignore = false;
+        if (!ignore) {
+            const getFormData = new FormData();
+            fileList.forEach((image) => {
+                getFormData.append('image', image);
+            });
+            getFormData.append('idTypeRoom', id);
+            setFormData(getFormData);
+        }
+        return () => {
+            ignore = true;
+        };
+    }, [fileList]);
 
     return (
         <>
@@ -54,7 +56,7 @@ function ModalInsert({ handleClose, show, id }) {
                         <Form.Label className={cx('label')}>Hình ảnh</Form.Label>
                         <Form.Control
                             className={cx('input-modal')}
-                            src={formData}
+                            src={fileList}
                             onChange={handleSetImg}
                             multiple
                             type="file"
@@ -65,7 +67,7 @@ function ModalInsert({ handleClose, show, id }) {
                     <Button className={cx('btn')} filled_1 onClick={handleClose}>
                         Đóng
                     </Button>
-                    <Button className={cx('btn')} filled_1 onClick={handleComfirm}>
+                    <Button className={cx('btn')} filled_1 onClick={update}>
                         Xác nhận
                     </Button>
                 </Modal.Footer>

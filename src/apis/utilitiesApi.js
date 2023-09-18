@@ -9,6 +9,7 @@ const getAllUtilities = async (page, size, searchString) => {
         throw error;
     }
 };
+
 const getAllUtilitiesSearch = async (searchString) => {
     try {
         const response = await axios.get(`/utilities?searchString=${searchString}`);
@@ -18,18 +19,26 @@ const getAllUtilitiesSearch = async (searchString) => {
     }
 };
 
-const postUtilities = async (param) => {
+const postUtilities = async (formData) => {
     try {
-        const response = await axios.post(`/utilities/create`, param);
+        const response = await axios.post(`/utilities/create`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
         return response;
     } catch (error) {
         throw error;
     }
 };
 
-const updateUtilities = async (param) => {
+const updateUtilities = async (formData) => {
     try {
-        const response = await axios.patch(`/utilities/update`, param);
+        const response = await axios.patch(`/utilities/update`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
         return response;
     } catch (error) {
         throw error;
@@ -38,11 +47,12 @@ const updateUtilities = async (param) => {
 
 const deleteUtilities = async (id) => {
     try {
-        const response = await axios.delete(`/utilities/delete`, id);
+        const response = await axios.delete(`/utilities/delete?id=${id}`);
         return response;
     } catch (error) {
         throw error;
     }
 };
+
 
 export default { getAllUtilities, postUtilities, getAllUtilitiesSearch, updateUtilities, deleteUtilities };
