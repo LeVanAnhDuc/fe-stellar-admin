@@ -83,7 +83,7 @@ function Contact() {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('title')}>DANH SÁCH LOẠI PHÒNG</div>
+            <div className={cx('title')}>DANH SÁCH LIÊN HỆ</div>
             <div className={cx('search')}>
                 <input
                     placeholder="Tìm kiếm..."
