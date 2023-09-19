@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://localhost:8080',
+    // baseURL: 'http://localhost:8080',
+    baseURL: 'https://stellarapi.onrender.com/',
     timeout: 300000, // Thời gian timeout cho mỗi request
     headers: {
         'Content-Type': 'application/json',
