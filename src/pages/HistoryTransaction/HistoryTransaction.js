@@ -22,7 +22,7 @@ function HistoryTransaction() {
     // Phan trang (paginate)
     const itemsPerPage = 4; // Số mục hiển thị trên mỗi trang
     const getListBooking = async (page, size = itemsPerPage) => {
-        const res = await bookingApi
+        await bookingApi
             .getTransactionHistoryForAdmin(userId, page, (size = itemsPerPage))
             .then((res) => setlistItems(res.data.data))
             .catch((error) => {
@@ -31,7 +31,7 @@ function HistoryTransaction() {
     };
 
     const getTotalBooking = async () => {
-        const res = await bookingApi
+        await bookingApi
             .getTotalTransactionHistoryForAdmin(userId)
             .then((res) => setPageCount(Math.ceil(res.data.data.totalTransactionHistory / itemsPerPage)))
             .catch((error) => {
